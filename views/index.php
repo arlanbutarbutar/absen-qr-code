@@ -1,35 +1,108 @@
+<?php require_once("../controller/script.php");
+require_once("redirect.php");
 
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <?php require_once("../resources/layout/header.php");?>
-        </head>
-        <body>
-          <?php require_once("../resources/layout/navbar.php");?>
-          <!-- Code Welcome -->
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 mt-3">
-                <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                  </symbol>
-                </svg>
-                <div class="alert alert-success d-flex align-items-center" role="alert">
-                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                  <div>
-                    Hallo ar.code_, terima kasih sudah menggunakan <strong>XAMPP Modify from ar.code_</strong> . Silakan lanjutkan project kamu, semangat ngoding ar.code_ :) .
-                  </div>
-                </div>
-              </div>
+$_SESSION['page-name'] = "";
+$_SESSION['page-url'] = "./";
+$_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><?php require_once("../resources/header-dash.php"); ?></head>
+
+<body class="app">
+  <header class="app-header fixed-top">
+    <?php require_once("../resources/topbar.php"); ?>
+    <!--//app-header-inner-->
+    <?php require_once("../resources/sidebar.php"); ?>
+    <!--//app-sidepanel-->
+  </header>
+  <!--//app-header-->
+
+  <div class="app-wrapper">
+
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+      <div class="container-xl">
+
+        <h1 class="app-page-title">Ringkasan</h1>
+
+        <div class="app-card alert alert-dismissible shadow-sm mb-4 border-left-decoration" role="alert">
+          <div class="inner">
+            <div class="app-card-body p-2">
+              <h3 class="mb-3">Selamat datang, <?= $_SESSION['data-user']['username']; ?>!</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-          </div>
-          <!-- End Code Welcome -->
+            <!--//app-card-body-->
 
-          <!-- Code Project -->
-          <!-- ... -->
-          <!-- End Code Project -->
-          <?php require_once("../resources/layout/header.php");?>
-        </body>
-      </html>
-    
+          </div>
+          <!--//inner-->
+        </div>
+        <!--//app-card-->
+
+        <div class="row g-4 mb-4">
+          <div class="col-6 col-lg-3">
+            <div class="app-card app-card-stat shadow-sm h-100">
+              <div class="app-card-body p-3 p-lg-4">
+                <h4 class="stats-type mb-1">Dosen</h4>
+                <div class="stats-figure"><?= $countDosen ?></div>
+              </div>
+              <!--//app-card-body-->
+              <a class="app-card-link-mask" href="dosen"></a>
+            </div>
+            <!--//app-card-->
+          </div>
+          <!--//col-->
+
+          <div class="col-6 col-lg-3">
+            <div class="app-card app-card-stat shadow-sm h-100">
+              <div class="app-card-body p-3 p-lg-4">
+                <h4 class="stats-type mb-1">Mahasiswa</h4>
+                <div class="stats-figure"><?= $countMhs?></div>
+              </div>
+              <!--//app-card-body-->
+              <a class="app-card-link-mask" href="mahasiswa"></a>
+            </div>
+            <!--//app-card-->
+          </div>
+          <!--//col-->
+          <div class="col-6 col-lg-3">
+            <div class="app-card app-card-stat shadow-sm h-100">
+              <div class="app-card-body p-3 p-lg-4">
+                <h4 class="stats-type mb-1">Projects</h4>
+                <div class="stats-figure">23</div>
+                <div class="stats-meta">
+                  Open</div>
+              </div>
+              <!--//app-card-body-->
+              <a class="app-card-link-mask" href="#"></a>
+            </div>
+            <!--//app-card-->
+          </div>
+          <!--//col-->
+          <div class="col-6 col-lg-3">
+            <div class="app-card app-card-stat shadow-sm h-100">
+              <div class="app-card-body p-3 p-lg-4">
+                <h4 class="stats-type mb-1">Invoices</h4>
+                <div class="stats-figure">6</div>
+                <div class="stats-meta">New</div>
+              </div>
+              <!--//app-card-body-->
+              <a class="app-card-link-mask" href="#"></a>
+            </div>
+            <!--//app-card-->
+          </div>
+          <!--//col-->
+        </div>
+        <!--//row-->
+
+      </div>
+      <!--//container-fluid-->
+    </div>
+    <!--//app-content-->
+
+    <?php require_once("../resources/footer-dash.php"); ?>
+
+</body>
+
+</html>
