@@ -76,8 +76,8 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
               <div class="card border-0 shadow">
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-striped table-borderless">
-                      <thead class="text-center">
+                    <table class="table table-striped table-borderless text-center">
+                      <thead>
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">Mata Kuliah</th>

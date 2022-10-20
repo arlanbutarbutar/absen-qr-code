@@ -75,7 +75,9 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 <div class="stats-figure"><?= $countMhs ?></div>
               </div>
               <!--//app-card-body-->
-              <a class="app-card-link-mask" href="mahasiswa"></a>
+              <?php if ($_SESSION['data-user']['role'] <= 2) { ?>
+                <a class="app-card-link-mask" href="mahasiswa"></a>
+              <?php } ?>
             </div>
             <!--//app-card-->
           </div>
@@ -99,7 +101,12 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 <div class="stats-figure"><?= $countAbsen ?></div>
               </div>
               <!--//app-card-body-->
-              <a class="app-card-link-mask" href="kelola-absen"></a>
+              <?php if ($_SESSION['data-user']['role'] <= 2) { ?>
+                <a class="app-card-link-mask" href="kelola-absen"></a>
+              <?php }
+              if ($_SESSION['data-user']['role'] == 3) { ?>
+                <a class="app-card-link-mask" href="absen"></a>
+              <?php } ?>
             </div>
             <!--//app-card-->
           </div>

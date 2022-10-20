@@ -44,8 +44,8 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             <div class="card border-0 shadow">
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-striped table-borderless">
-                    <thead class="text-center">
+                  <table class="table table-striped table-borderless text-center">
+                    <thead>
                       <tr>
                         <th scope="col">#</th>
                         <th scope="col">Mata Kuliah</th>
@@ -66,55 +66,9 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                             <td><?= $row['nama_matakuliah'] ?></td>
                             <td><?= $row['hari'] . " (mulai jam " . $row['mulai'] . " - " . $row['selesai'] . ")" ?></td>
                             <td>
-                              <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#lihat<?= $row['id_jadwal'] ?>">
+                              <button type="button" class="btn btn-info text-white" onclick="window.location.href='presensi?jw=<?= $row['id_jadwal']?>'">
                                 Lihat Presensi Kehadiran
                               </button>
-                              <div class="modal fade" id="lihat<?= $row['id_jadwal'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel"><?= $row['nama_matakuliah'] ?> Hari <?= $row['hari'] ?></h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                      <div class="table-responsive">
-                                        <table class="table table-striped table-borderless">
-                                          <thead class="text-center">
-                                            <tr>
-                                              <th scope="col">#</th>
-                                              <th scope="col">Nama Mahasiswa</th>
-                                              <th scope="col">Jam Masuk</th>
-                                              <th scope="col">Tgl Masuk</th>
-                                              <th scope="col">Status Kehadiran</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <?php $id_jadwal = $row['id_jadwal'];
-                                            $absen = mysqli_query($conn, "SELECT * FROM absen JOIN jadwal ON absen.id_jadwal=jadwal.id_jadwal JOIN mahasiswa ON absen.nim_mhs=mahasiswa.nim_mhs WHERE absen.id_jadwal='$id_jadwal'");
-                                            if (mysqli_num_rows($absen) == 0) { ?>
-                                              <tr>
-                                                <th scope="row" colspan="5">Belum ada mahasiswa yang mengisi absen</th>
-                                              </tr>
-                                              <?php } else if (mysqli_num_rows($absen) > 0) {
-                                              $no = 1;
-                                              while ($row_absen = mysqli_fetch_assoc($absen)) { ?>
-                                                <tr>
-                                                  <th scope="row"><?= $no ?></th>
-                                                  <td><?= $row_absen['nama_mhs'] ?></td>
-                                                  <td><?= $row_absen['jam_masuk'] ?></td>
-                                                  <td><?= $row_absen['tgl_masuk'] ?></td>
-                                                  <td><?= $row_absen['status'] ?></td>
-                                                </tr>
-                                            <?php $no++;
-                                              }
-                                            } ?>
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
                             </td>
                             <td>
                               <form action="cetak-laporan" method="post">

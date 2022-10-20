@@ -104,8 +104,8 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
               <div class="card border-0 shadow">
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-striped table-borderless">
-                      <thead class="text-center">
+                    <table class="table table-striped table-borderless text-center">
+                      <thead>
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">NIM</th>
@@ -133,7 +133,9 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                               <th scope="row"><?= $no; ?></th>
                               <td><?= $row['nim_mhs'] ?></td>
                               <td><?= $row['nama_mhs'] ?></td>
-                              <td><?= $row['tempat_lahir'] . ", " . $row['tanggal_lahir'] ?></td>
+                              <?php $date = date_create($row['tanggal_lahir']);
+                              $date = date_format($date, 'd M Y'); ?>
+                              <td><?= $row['tempat_lahir'] . ", " . $date ?></td>
                               <td><?= $row['agama'] ?></td>
                               <td><?= $row['alamat'] ?></td>
                               <td><?= $row['no_hp'] ?></td>

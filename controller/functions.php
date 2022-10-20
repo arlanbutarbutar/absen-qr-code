@@ -18,23 +18,21 @@ if (!isset($_SESSION['data-user'])) {
       if ($row['nama_dosen'] == "admin") {
         $role = 1;
       } else {
-        $rolw = 2;
+        $role = 2;
       }
       $_SESSION['data-user'] = [
         'id' => $row['nidn_dosen'],
         'role' => $role,
         'username' => $row['nama_dosen'],
-        'image' => $row['foto'],
       ];
     } else if (mysqli_num_rows($checkAccount1) == 0) {
       $checkAccount2 = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE nim_mhs='$id'");
       if (mysqli_num_rows($checkAccount2) > 0) {
         $row = mysqli_fetch_assoc($checkAccount2);
         $_SESSION['data-user'] = [
-          'id' => $row['nidn_dosen'],
+          'id' => $row['nim_mhs'],
           'role' => 3,
           'username' => $row['nama_mhs'],
-          'image' => 'user.png',
         ];
       } else if (mysqli_num_rows($checkAccount2) == 0) {
         $_SESSION['message-danger'] = "Maaf, NIM/NIDN yang anda masukan belum terdaftar.";
@@ -42,6 +40,43 @@ if (!isset($_SESSION['data-user'])) {
         return false;
       }
     }
+  }
+  function absen_hadir($data)
+  {
+    global $conn, $time;
+    $nim = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nim']))));
+    $id_jadwal = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-jadwal']))));
+    $checkNIM = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE nim_mhs='$nim'");
+    if (mysqli_num_rows($checkNIM) == 0) {
+      $_SESSION['message-danger'] = "Maaf, NIM yang anda masukan belum terdaftar.";
+      $_SESSION['time-message'] = time();
+      return false;
+    }
+    $date = date('Y-m-d');
+    $checkWaktu = mysqli_query($conn, "SELECT * FROM absen WHERE nim_mhs='$nim' AND tgl_masuk='$date'");
+    if (mysqli_num_rows($checkWaktu) > 0) {
+      $_SESSION['message-danger'] = "Maaf, anda sudah melakukan absensi sebelumnya.";
+      $_SESSION['time-message'] = time();
+      return false;
+    }
+    $mulai = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['mulai']))));
+    $selesai = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['selesai']))));
+    if ("0" . $time < $mulai) {
+      $_SESSION['message-danger'] = "Maaf, jam pelajaran belum dimulai.";
+      $_SESSION['time-message'] = time();
+      return false;
+    }
+    if ("0" . $time > $selesai) {
+      $status = "Alpha";
+      $_SESSION['message-warning'] = "Maaf, jam pelajaran telah selesai dan anda dinyatakan alpha.";
+      $_SESSION['time-message'] = time();
+    } else if ("0" . $time <= $selesai) {
+      $status = "Hadir";
+      $_SESSION['message-success'] = "Anda telah dinyatakan hadir pada mata kuliah " . $data['mk'] . ".";
+      $_SESSION['time-message'] = time();
+    }
+    mysqli_query($conn, "INSERT INTO absen(id_jadwal,nim_mhs,status) VALUES('$id_jadwal','$nim','$status')");
+    return mysqli_affected_rows($conn);
   }
 }
 if (isset($_SESSION['data-user'])) {
@@ -53,6 +88,14 @@ if (isset($_SESSION['data-user'])) {
       $nama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nama']))));
       $jk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['jk']))));
       mysqli_query($conn, "UPDATE dosen SET nama_dosen='$nama', jenis_kelamin='$jk' WHERE nidn_dosen='$nidn'");
+      return mysqli_affected_rows($conn);
+    }
+    function ubah_presensi($data)
+    {
+      global $conn;
+      $id_absen = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-absen']))));
+      $status = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['status']))));
+      mysqli_query($conn, "UPDATE absen SET status='$status' WHERE id_absen='$id_absen'");
       return mysqli_affected_rows($conn);
     }
 

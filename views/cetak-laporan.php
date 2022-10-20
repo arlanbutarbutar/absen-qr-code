@@ -46,11 +46,13 @@ header("Content-Disposition: attachment; filename=" . $mk . " Hari " . $hari . "
       </tr>
       <?php } else if (mysqli_num_rows($absen) > 0) {
       $no = 1;
-      while ($row_absen = mysqli_fetch_assoc($absen)) { ?>
+      while ($row = mysqli_fetch_assoc($absen)) { ?>
         <tr align="center">
+          <td><?= $no ?></td>
           <td><?= $row['nama_mhs'] ?></td>
           <td><?= $row['jam_masuk'] ?></td>
-          <td><?= $row['tgl_masuk'] ?></td>
+          <td><?php $date = date_create($row['tgl_masuk']);
+              echo date_format($date, 'l, d M Y'); ?></td>
           <td><?= $row['status'] ?></td>
           <td><?= $row['nama_dosen'] ?></td>
           <td><?= $row['ruang'] ?></td>

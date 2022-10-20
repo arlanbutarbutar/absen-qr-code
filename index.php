@@ -95,32 +95,74 @@ $_SESSION['page-url'] = "./";
                     <div class="d-flex justify-content-between mt-3">
                       <h6><?= $row['nama_matakuliah'] ?> (hari <?= $row['hari'] ?>)</h6>
                       <div class="qr-code">
-                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#mk<?= $row['id_jadwal'] ?>">
                           QR Absen<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z" />
                           </svg>
                         </button>
-                        <div class="modal fade" id="mk<?= $row['id_jadwal'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel"><?= $row['nama_matakuliah'] ?></h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body text-center">
-                                <img src="assets/images/qrcode/<?= $row['qr_code'] ?>" style="width: 100%;" alt="">
-                                <small><?php
-                                        $string = $row['qr_code'];
-                                        $string = preg_replace("/[^0-9]/", "", $string);
-                                        echo $baseURL . "absen?studyID=" . $string;
-                                        ?></small>
+                        <?php $hari = $row['hari'];
+                        function hari_ini()
+                        {
+                          $hari = date("D");
+
+                          switch ($hari) {
+                            case 'Sun':
+                              $hari_ini = "Minggu";
+                              break;
+
+                            case 'Mon':
+                              $hari_ini = "Senin";
+                              break;
+
+                            case 'Tue':
+                              $hari_ini = "Selasa";
+                              break;
+
+                            case 'Wed':
+                              $hari_ini = "Rabu";
+                              break;
+
+                            case 'Thu':
+                              $hari_ini = "Kamis";
+                              break;
+
+                            case 'Fri':
+                              $hari_ini = "Jumat";
+                              break;
+
+                            case 'Sat':
+                              $hari_ini = "Sabtu";
+                              break;
+
+                            default:
+                              $hari_ini = "Tidak di ketahui";
+                              break;
+                          }
+                          return $hari_ini;
+                        }
+                        if (hari_ini() == $hari) {
+                        ?>
+                          <div class="modal fade" id="mk<?= $row['id_jadwal'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel"><?= $row['nama_matakuliah'] ?></h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                  <img src="assets/images/qrcode/<?= $row['qr_code'] ?>" style="width: 100%;" alt="">
+                                  <small><?php
+                                          $string = $row['qr_code'];
+                                          $string = preg_replace("/[^0-9]/", "", $string);
+                                          echo $baseURL . "absen?studyID=" . $string;
+                                          ?></small>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        <?php } ?>
                       </div>
                     </div>
                 <?php }

@@ -7,6 +7,9 @@ if (!isset($_GET['studyID'])) {
     header("Location: ./");
     exit();
   } else {
+    $idQR = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_GET['studyID']))));
+    $qr_code = $idQR . ".jpg";
+    $absen = mysqli_query($conn, "SELECT * FROM jadwal JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk WHERE jadwal.qr_code='$qr_code'");
   }
 }
 
@@ -55,8 +58,8 @@ $_SESSION['page-url'] = "absen";
                 Sistem absensi kehadiran mahasiswa/i dengan menggunakan QR Code.
               </p>
               <div class="btn-box">
-                <a href="#cari-mk" class="">
-                  Cari MK
+                <a href="#absen" class="">
+                  Absen
                 </a>
               </div>
             </div>
@@ -66,25 +69,30 @@ $_SESSION['page-url'] = "absen";
     </section>
   </div>
 
-  <section class="about_section layout_padding-bottom">
+  <section class="about_section layout_padding-bottom" id="absen">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="detail-box">
-            <div class="heading_container">
-              <h2>
-                About Our Apartment
-              </h2>
+          <?php foreach ($absen as $row) { ?>
+            <div class="detail-box">
+              <div class="heading_container mb-4">
+                <h2>
+                  Absen <?= $row['nama_matakuliah'] ?>
+                </h2>
+              </div>
+              <form action="" method="post">
+                <div class="form-group">
+                  <label for="nim">NIM</label>
+                  <input type="number" name="nim" class="form-control" id="nim" placeholder="NIM" required>
+                </div>
+                <input type="hidden" name="mk" value="<?= $row['nama_matakuliah'] ?>">
+                <input type="hidden" name="id-jadwal" value="<?= $row['id_jadwal'] ?>">
+                <input type="hidden" name="mulai" value="<?= $row['mulai'] ?>">
+                <input type="hidden" name="selesai" value="<?= $row['selesai'] ?>">
+                <button type="submit" name="absen-hadir" class="btn btn-success">Hadir</button>
+              </form>
             </div>
-            <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in
-              some form, by injected humour, or randomised words
-            </p>
-            <a href="">
-              Read More
-            </a>
-          </div>
+          <?php } ?>
         </div>
       </div>
     </div>

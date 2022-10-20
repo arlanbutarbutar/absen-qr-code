@@ -79,7 +79,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         <label for="agama" class="form-label">Agama</label>
                         <select name="agama" class="form-select" aria-label="Default select example" required>
                           <option selected value="">Pilih Agama</option>
-                          <option value="Islam">Laki-Laki</option>
+                          <option value="Islam">Islam</option>
                           <option value="Kristen Protestan">Kristen Protestan</option>
                           <option value="Kristen Katolik">Kristen Katolik</option>
                           <option value="Hindu">Hindu</option>
@@ -153,7 +153,9 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         <tr>
                           <th scope="row">TTL</th>
                           <td>:</td>
-                          <td><?= $row['tempat_lahir'] . ", " . $row['tanggal_lahir'] ?></td>
+                          <?php $date = date_create($row['tanggal_lahir']);
+                          $date = date_format($date, 'd M Y'); ?>
+                          <td><?= $row['tempat_lahir'] . ", " . $date ?></td>
                         </tr>
                         <tr>
                           <th scope="row">Agama</th>

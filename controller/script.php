@@ -39,6 +39,13 @@ if (!isset($_SESSION['data-user'])) {
       exit();
     }
   }
+
+  if (isset($_POST['absen-hadir'])) {
+    if (absen_hadir($_POST) > 0) {
+      header("Location: " . $_SESSION['page-url']);
+      exit();
+    }
+  }
 }
 
 if (isset($_SESSION['data-user'])) {
@@ -87,19 +94,6 @@ if (isset($_SESSION['data-user'])) {
     $prodi = mysqli_query($conn, "SELECT * FROM prodi JOIN fakultas ON prodi.id_fakultas=fakultas.id_fakultas ORDER BY prodi.id_prodi DESC");
     $fakultas = mysqli_query($conn, "SELECT * FROM fakultas ORDER BY id_fakultas DESC");
 
-    // mata kuliah
-    $selectDosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser'");
-    $data_role3 = 25;
-    $result_role3 = mysqli_query($conn, "SELECT * FROM mata_kuliah JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen");
-    $total_role3 = mysqli_num_rows($result_role3);
-    $total_page_role3 = ceil($total_role3 / $data_role3);
-    $page_role3 = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
-    $awal_data_role3 = ($page_role3 > 1) ? ($page_role3 * $data_role3) - $data_role3 : 0;
-    $mata_kuliah = mysqli_query($conn, "SELECT * FROM mata_kuliah 
-      JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen 
-      ORDER BY mata_kuliah.id_mk DESC LIMIT $awal_data_role2, $data_role2
-    ");
-
     // jadwal
     if (isset($_POST['buat-jadwal'])) {
       $id_mk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_POST['id-mk']))));
@@ -117,7 +111,17 @@ if (isset($_SESSION['data-user'])) {
     }
 
     // absen
-    $jadwalCheck=mysqli_query($conn, "SELECT * FROM jadwal JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk");
+    $jadwalCheck = mysqli_query($conn, "SELECT * FROM jadwal JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk");
+
+    // presensi
+    if (isset($_POST['ubah-presensi'])) {
+      if (ubah_presensi($_POST) > 0) {
+        $_SESSION['message-success'] = "Absensi dari " . $_POST['namaOld'] . " berhasil di ubah.";
+        $_SESSION['time-message'] = time();
+        header("Location: " . $_SESSION['page-url']);
+        exit();
+      }
+    }
 
     if ($_SESSION['data-user']['role'] == 1) {
       // dosen
@@ -289,15 +293,39 @@ if (isset($_SESSION['data-user'])) {
     }
   }
 
-  if ($_SESSION['data-user']['role'] == 3) {
-    $profil = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE nim_mhs='$idUser'");
-    if (isset($_POST['ubah-profil-mhs'])) {
-      if (ubah_profil_mhs($_POST) > 0) {
-        $_SESSION['message-success'] = "Profil berhasil di ubah.";
-        $_SESSION['time-message'] = time();
-        header("Location: " . $_SESSION['page-url']);
-        exit();
+  if ($_SESSION['data-user']['role'] <= 3) {
+    // mata kuliah
+    $selectDosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser'");
+    $data_role3 = 25;
+    $result_role3 = mysqli_query($conn, "SELECT * FROM mata_kuliah JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen");
+    $total_role3 = mysqli_num_rows($result_role3);
+    $total_page_role3 = ceil($total_role3 / $data_role3);
+    $page_role3 = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
+    $awal_data_role3 = ($page_role3 > 1) ? ($page_role3 * $data_role3) - $data_role3 : 0;
+    $mata_kuliah = mysqli_query($conn, "SELECT * FROM mata_kuliah 
+      JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen 
+      ORDER BY mata_kuliah.id_mk DESC LIMIT $awal_data_role3, $data_role3
+    ");
+
+    if ($_SESSION['data-user']['role'] == 3) {
+      $profil = mysqli_query($conn, "SELECT * FROM mahasiswa JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi JOIN fakultas ON prodi.id_fakultas=fakultas.id_fakultas WHERE mahasiswa.nim_mhs='$idUser'");
+      if (isset($_POST['ubah-profil-mhs'])) {
+        if (ubah_profil_mhs($_POST) > 0) {
+          $_SESSION['message-success'] = "Profil berhasil di ubah.";
+          $_SESSION['time-message'] = time();
+          header("Location: " . $_SESSION['page-url']);
+          exit();
+        }
       }
+
+      // presensi
+      $presensi = mysqli_query($conn, "SELECT * FROM absen 
+        JOIN mahasiswa ON absen.nim_mhs=mahasiswa.nim_mhs 
+        JOIN jadwal ON absen.id_jadwal=jadwal.id_jadwal 
+        JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk 
+        JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen 
+        WHERE mahasiswa.nim_mhs='$idUser'
+      ");
     }
   }
 }
