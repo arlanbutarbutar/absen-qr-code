@@ -16,12 +16,14 @@
           <i class="search-mobile-trigger-icon fas fa-search"></i>
         </div>
         <!--//col-->
-        <div class="app-search-box col">
-          <form class="app-search-form">
-            <input type="text" placeholder="Search..." name="search" id="search" class="form-control search-input">
-            <button type="submit" class="btn search-btn btn-primary" value="Search"><i class="fas fa-search"></i></button>
-          </form>
-        </div>
+        <?php if ($_SESSION['page-url'] != "./" && $_SESSION['page-url'] != "profil" && $_SESSION['page-url'] != "prodi-fakultas" && $_SESSION['page-url'] != "jadwal") { ?>
+          <div class="app-search-box col">
+            <form class="app-search-form">
+              <input type="text" placeholder="Search..." name="search" id="search" class="form-control search-input">
+              <button type="submit" class="btn search-btn btn-primary" value="Search"><i class="fas fa-search"></i></button>
+            </form>
+          </div>
+        <?php } ?>
         <!--//app-search-box-->
 
         <div class="app-utilities col-auto">

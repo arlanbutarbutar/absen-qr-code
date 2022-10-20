@@ -58,3 +58,12 @@
     })
   }
 </script>
+<script>
+  $(document).ready(function() {
+    $('#search').on('keyup', function() {
+      $.get('search.php?key=' + $('#search').val(), function(data) {
+        $('#search-data').html(data);
+      });
+    });
+  });
+</script>

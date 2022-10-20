@@ -63,7 +63,7 @@ $_SESSION['page-url'] = "./";
       <form action="" method="POST">
         <div class=" form-row">
           <div class="col-md-10">
-            <input type="text" name="mk" class="form-control" placeholder="Cari Mata Kuliah">
+            <input type="text" name="mk" class="form-control" placeholder="Cari Mata Kuliah" required>
           </div>
           <div class="col-md-2">
             <button type="submit" name="cari-mk" class="">
@@ -79,33 +79,53 @@ $_SESSION['page-url'] = "./";
 
 
   <!-- about section -->
-  <?php if (isset($_POST['cari-mk'])) { ?>
+  <?php if (isset($_POST['cari-mk'])) {
+    $mk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_POST['mk']))));
+    $search_mk = mysqli_query($conn, "SELECT * FROM mata_kuliah JOIN jadwal ON mata_kuliah.id_mk=jadwal.id_mk WHERE mata_kuliah.nama_matakuliah LIKE '%$mk%'"); ?>
     <section class="about_section layout_padding-bottom">
-      <div class="square-box">
-        <img src="assets/images/square.png" alt="">
-      </div>
       <div class="container">
         <div class="row">
-          <div class="col-md-6">
-            <div class="img-box">
-              <img src="assets/images/about-img.jpg" alt="">
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="detail-box">
-              <div class="heading_container">
-                <h2>
-                  About Our Apartment
-                </h2>
+          <div class="col-md-12">
+            <div class="card border-0 shadow">
+              <div class="card-body">
+                <?php if (mysqli_num_rows($search_mk) == 0) { ?>
+                  <p>Absensi Mata Kuliah yang anda cari belum tersedia</p>
+                  <?php } else if (mysqli_num_rows($search_mk) > 0) {
+                  while ($row = mysqli_fetch_assoc($search_mk)) { ?>
+                    <div class="d-flex justify-content-between mt-3">
+                      <h6><?= $row['nama_matakuliah'] ?> (hari <?= $row['hari'] ?>)</h6>
+                      <div class="qr-code">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#mk<?= $row['id_jadwal'] ?>">
+                          QR Absen<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z" />
+                          </svg>
+                        </button>
+                        <div class="modal fade" id="mk<?= $row['id_jadwal'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"><?= $row['nama_matakuliah'] ?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body text-center">
+                                <img src="assets/images/qrcode/<?= $row['qr_code'] ?>" style="width: 100%;" alt="">
+                                <small><?php
+                                        $string = $row['qr_code'];
+                                        $string = preg_replace("/[^0-9]/", "", $string);
+                                        echo $baseURL . "absen?studyID=" . $string;
+                                        ?></small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <?php }
+                } ?>
               </div>
-              <p>
-                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-                in
-                some form, by injected humour, or randomised words
-              </p>
-              <a href="">
-                Read More
-              </a>
             </div>
           </div>
         </div>
