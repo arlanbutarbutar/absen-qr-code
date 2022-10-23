@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['data-user'])) {
+// if (!isset($_SESSION['data-user'])) {
   function masuk($data)
   {
     global $conn;
@@ -15,9 +15,9 @@ if (!isset($_SESSION['data-user'])) {
     $checkAccount1 = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen='$id'");
     if (mysqli_num_rows($checkAccount1) > 0) {
       $row = mysqli_fetch_assoc($checkAccount1);
-      if ($row['nama_dosen'] == "admin") {
+      if ($row['jabatan'] == "admin") {
         $role = 1;
-      } else {
+      } else if ($row['jabatan'] != "admin") {
         $role = 2;
       }
       $_SESSION['data-user'] = [
@@ -41,6 +41,45 @@ if (!isset($_SESSION['data-user'])) {
       }
     }
   }
+  function hari_ini()
+  {
+    $hari = date("D");
+
+    switch ($hari) {
+      case 'Sun':
+        $hari_ini = "Minggu";
+        break;
+
+      case 'Mon':
+        $hari_ini = "Senin";
+        break;
+
+      case 'Tue':
+        $hari_ini = "Selasa";
+        break;
+
+      case 'Wed':
+        $hari_ini = "Rabu";
+        break;
+
+      case 'Thu':
+        $hari_ini = "Kamis";
+        break;
+
+      case 'Fri':
+        $hari_ini = "Jumat";
+        break;
+
+      case 'Sat':
+        $hari_ini = "Sabtu";
+        break;
+
+      default:
+        $hari_ini = "Tidak di ketahui";
+        break;
+    }
+    return $hari_ini;
+  }
   function absen_hadir($data)
   {
     global $conn, $time;
@@ -61,24 +100,36 @@ if (!isset($_SESSION['data-user'])) {
     }
     $mulai = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['mulai']))));
     $selesai = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['selesai']))));
-    if ("0" . $time < $mulai) {
+    $hari = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['hari']))));
+    if (hari_ini() != $hari) {
+      $_SESSION['message-danger'] = "Maaf, absen hanya dilakukan pada hari " . $hari . ".";
+      $_SESSION['time-message'] = time();
+      return false;
+    }
+    $len_time = strlen($time);
+    if ($len_time == 7) {
+      $time = "0" . $time;
+    } else if ($len_time == 8) {
+      $time = $time;
+    }
+    if ($time < $mulai) {
       $_SESSION['message-danger'] = "Maaf, jam pelajaran belum dimulai.";
       $_SESSION['time-message'] = time();
       return false;
     }
-    if ("0" . $time > $selesai) {
+    if ($time > $selesai) {
       $status = "Alpha";
       $_SESSION['message-warning'] = "Maaf, jam pelajaran telah selesai dan anda dinyatakan alpha.";
       $_SESSION['time-message'] = time();
-    } else if ("0" . $time <= $selesai) {
+    } else if ($time <= $selesai) {
       $status = "Hadir";
       $_SESSION['message-success'] = "Anda telah dinyatakan hadir pada mata kuliah " . $data['mk'] . ".";
       $_SESSION['time-message'] = time();
     }
-    mysqli_query($conn, "INSERT INTO absen(id_jadwal,nim_mhs,status) VALUES('$id_jadwal','$nim','$status')");
+    mysqli_query($conn, "INSERT INTO absen(id_jadwal,nim_mhs,jam_masuk,status) VALUES('$id_jadwal','$nim','$time','$status')");
     return mysqli_affected_rows($conn);
   }
-}
+// }
 if (isset($_SESSION['data-user'])) {
   if ($_SESSION['data-user']['role'] <= 2) {
     function ubah_profil_dosen($data)

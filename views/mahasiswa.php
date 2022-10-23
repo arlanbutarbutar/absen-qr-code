@@ -66,7 +66,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                       <label for="agama" class="form-label">Agama</label>
                       <select name="agama" class="form-select" aria-label="Default select example" required>
                         <option selected value="">Pilih Agama</option>
-                        <option value="Islam">Laki-Laki</option>
+                        <option value="Islam">Islam</option>
                         <option value="Kristen Protestan">Kristen Protestan</option>
                         <option value="Kristen Katolik">Kristen Katolik</option>
                         <option value="Hindu">Hindu</option>

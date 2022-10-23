@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 4.9.7
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 21 Okt 2022 pada 00.46
--- Versi server: 10.4.22-MariaDB
--- Versi PHP: 7.4.27
+-- Host: localhost:3306
+-- Waktu pembuatan: 24 Okt 2022 pada 06.15
+-- Versi server: 10.3.36-MariaDB
+-- Versi PHP: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `absen_qr_code`
+-- Database: `gaslvldx_berty`
 --
 
 -- --------------------------------------------------------
@@ -35,6 +36,13 @@ CREATE TABLE `absen` (
   `tgl_masuk` date NOT NULL DEFAULT current_timestamp(),
   `status` varchar(20) NOT NULL DEFAULT 'Hadir'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `absen`
+--
+
+INSERT INTO `absen` (`id_absen`, `id_jadwal`, `nim_mhs`, `jam_masuk`, `tgl_masuk`, `status`) VALUES
+(7, 8, 1823735233, '07:00:48', '2022-10-24', 'Hadir');
 
 -- --------------------------------------------------------
 
@@ -55,9 +63,8 @@ CREATE TABLE `dosen` (
 --
 
 INSERT INTO `dosen` (`nidn_dosen`, `nama_dosen`, `jenis_kelamin`, `gelar`, `jabatan`) VALUES
-(1, 'Arlan Butar Butar', 'L', 'S. Kom', 'teknisi lapangan'),
-(2, 'pak aril', 'L', 'skom', 'TU'),
-(12345678, 'admin', 'L', 'S.Kom', 'admin');
+(12345678, 'Admin', 'P', 'S.Kom', 'admin'),
+(2147483647, 'DR. Deddy B. Lasfeto', 'L', 'ST., MT', 'Dosen');
 
 -- --------------------------------------------------------
 
@@ -75,9 +82,8 @@ CREATE TABLE `fakultas` (
 --
 
 INSERT INTO `fakultas` (`id_fakultas`, `nama_fakultas`) VALUES
-(1, 'Teknik'),
-(2, 'Ekonomi Bisnis'),
-(3, 'FISIP');
+(5, 'Teknik Elektro'),
+(7, 'Teknik Listrik');
 
 -- --------------------------------------------------------
 
@@ -100,7 +106,8 @@ CREATE TABLE `jadwal` (
 --
 
 INSERT INTO `jadwal` (`id_jadwal`, `id_mk`, `hari`, `ruang`, `mulai`, `selesai`, `qr_code`) VALUES
-(1, 4, 'Jumat', 'A2', '07:00:00', '09:00:00', '2434.jpg');
+(7, 11, 'Senin', 'teb 2', '18:55:00', '21:00:00', '9689.jpg'),
+(8, 12, 'Senin', 'Tel 3', '07:00:00', '09:00:00', '9925.jpg');
 
 -- --------------------------------------------------------
 
@@ -124,7 +131,8 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`nim_mhs`, `id_prodi`, `nama_mhs`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `no_hp`) VALUES
-(23118036, 3, 'Arlan Butar Butar', 'Kupang', '1999-08-27', 'Kristen Katolik', 'Jalan W.J. Lalamentik No.95', '08113827421');
+(1823735212, 5, 'Berty Monding', 'Oesapa', '2001-03-15', 'Kristen Protestan', 'Jln. Monitor', '082189368463'),
+(1823735233, 5, 'Vredly Ndung', 'Kupang', '2001-07-26', 'Kristen Protestan', 'Pasirpanjang', '085792892784');
 
 -- --------------------------------------------------------
 
@@ -144,8 +152,8 @@ CREATE TABLE `mata_kuliah` (
 --
 
 INSERT INTO `mata_kuliah` (`id_mk`, `nidn_dosen`, `nama_matakuliah`, `sks`) VALUES
-(4, 1, 'Pemrograman Web', 3),
-(6, 2, 'Kalkulus', 3);
+(11, 2147483647, 'Metode Penulisan', 3),
+(12, 2147483647, 'Jaringan Komputer 1', 3);
 
 -- --------------------------------------------------------
 
@@ -164,8 +172,8 @@ CREATE TABLE `prodi` (
 --
 
 INSERT INTO `prodi` (`id_prodi`, `id_fakultas`, `nama_prodi`) VALUES
-(2, 1, 'Elektro'),
-(3, 1, 'Informatika');
+(5, 5, 'Metode Penulisan'),
+(6, 5, 'Jaringan Komputer 1');
 
 --
 -- Indexes for dumped tables
@@ -227,43 +235,43 @@ ALTER TABLE `prodi`
 -- AUTO_INCREMENT untuk tabel `absen`
 --
 ALTER TABLE `absen`
-  MODIFY `id_absen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_absen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `dosen`
 --
 ALTER TABLE `dosen`
-  MODIFY `nidn_dosen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12345679;
+  MODIFY `nidn_dosen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT untuk tabel `fakultas`
 --
 ALTER TABLE `fakultas`
-  MODIFY `id_fakultas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_fakultas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `jadwal`
 --
 ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `nim_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23118042;
+  MODIFY `nim_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1823735234;
 
 --
 -- AUTO_INCREMENT untuk tabel `mata_kuliah`
 --
 ALTER TABLE `mata_kuliah`
-  MODIFY `id_mk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_mk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `prodi`
 --
 ALTER TABLE `prodi`
-  MODIFY `id_prodi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_prodi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

@@ -30,7 +30,7 @@ if (isset($_SESSION['time-message'])) {
   }
 }
 
-$baseURL = "https://$_SERVER[HTTP_HOST]/apps/absen-qr-code/";
+$baseURL = "http://$_SERVER[HTTP_HOST]/absen-qr-code/";
 
 if (!isset($_SESSION['data-user'])) {
   if (isset($_POST['masuk'])) {

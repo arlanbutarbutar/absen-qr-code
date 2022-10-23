@@ -89,6 +89,7 @@ $_SESSION['page-url'] = "absen";
                 <input type="hidden" name="id-jadwal" value="<?= $row['id_jadwal'] ?>">
                 <input type="hidden" name="mulai" value="<?= $row['mulai'] ?>">
                 <input type="hidden" name="selesai" value="<?= $row['selesai'] ?>">
+                <input type="hidden" name="hari" value="<?= $row['hari'] ?>">
                 <button type="submit" name="absen-hadir" class="btn btn-success">Hadir</button>
               </form>
             </div>
