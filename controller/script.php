@@ -1,5 +1,5 @@
 <?php
-// error_reporting(~E_NOTICE & ~E_DEPRECATED);
+error_reporting(~E_NOTICE & ~E_DEPRECATED);
 if (!isset($_SESSION[''])) {
   session_start();
 }
@@ -30,7 +30,7 @@ if (isset($_SESSION['time-message'])) {
   }
 }
 
-$baseURL = "http://$_SERVER[HTTP_HOST]/absen-qr-code/";
+$baseURL = "http://$_SERVER[HTTP_HOST]/apps/absen-qr-code/";
 
 if (!isset($_SESSION['data-user'])) {
   if (isset($_POST['masuk'])) {
