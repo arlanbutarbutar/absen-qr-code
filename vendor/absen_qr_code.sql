@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.7
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Waktu pembuatan: 24 Okt 2022 pada 06.15
--- Versi server: 10.3.36-MariaDB
--- Versi PHP: 7.4.30
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 02 Nov 2022 pada 14.10
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gaslvldx_berty`
+-- Database: `absen_qr_code`
 --
 
 -- --------------------------------------------------------
@@ -37,13 +36,6 @@ CREATE TABLE `absen` (
   `status` varchar(20) NOT NULL DEFAULT 'Hadir'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `absen`
---
-
-INSERT INTO `absen` (`id_absen`, `id_jadwal`, `nim_mhs`, `jam_masuk`, `tgl_masuk`, `status`) VALUES
-(7, 8, 1823735233, '07:00:48', '2022-10-24', 'Hadir');
-
 -- --------------------------------------------------------
 
 --
@@ -51,7 +43,7 @@ INSERT INTO `absen` (`id_absen`, `id_jadwal`, `nim_mhs`, `jam_masuk`, `tgl_masuk
 --
 
 CREATE TABLE `dosen` (
-  `nidn_dosen` int(11) NOT NULL,
+  `nip_dosen` varchar(50) NOT NULL,
   `nama_dosen` varchar(225) NOT NULL,
   `jenis_kelamin` enum('P','L') NOT NULL,
   `gelar` varchar(35) NOT NULL,
@@ -62,28 +54,8 @@ CREATE TABLE `dosen` (
 -- Dumping data untuk tabel `dosen`
 --
 
-INSERT INTO `dosen` (`nidn_dosen`, `nama_dosen`, `jenis_kelamin`, `gelar`, `jabatan`) VALUES
-(12345678, 'Admin', 'P', 'S.Kom', 'admin'),
-(2147483647, 'DR. Deddy B. Lasfeto', 'L', 'ST., MT', 'Dosen');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `fakultas`
---
-
-CREATE TABLE `fakultas` (
-  `id_fakultas` int(11) NOT NULL,
-  `nama_fakultas` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `fakultas`
---
-
-INSERT INTO `fakultas` (`id_fakultas`, `nama_fakultas`) VALUES
-(5, 'Teknik Elektro'),
-(7, 'Teknik Listrik');
+INSERT INTO `dosen` (`nip_dosen`, `nama_dosen`, `jenis_kelamin`, `gelar`, `jabatan`) VALUES
+('12345678', 'Berty', 'P', 'S.Kom', 'admin');
 
 -- --------------------------------------------------------
 
@@ -101,13 +73,16 @@ CREATE TABLE `jadwal` (
   `qr_code` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data untuk tabel `jadwal`
+-- Struktur dari tabel `jurusan`
 --
 
-INSERT INTO `jadwal` (`id_jadwal`, `id_mk`, `hari`, `ruang`, `mulai`, `selesai`, `qr_code`) VALUES
-(7, 11, 'Senin', 'teb 2', '18:55:00', '21:00:00', '9689.jpg'),
-(8, 12, 'Senin', 'Tel 3', '07:00:00', '09:00:00', '9925.jpg');
+CREATE TABLE `jurusan` (
+  `id_jurusan` int(11) NOT NULL,
+  `nama_jurusan` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -126,14 +101,6 @@ CREATE TABLE `mahasiswa` (
   `no_hp` char(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `mahasiswa`
---
-
-INSERT INTO `mahasiswa` (`nim_mhs`, `id_prodi`, `nama_mhs`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `no_hp`) VALUES
-(1823735212, 5, 'Berty Monding', 'Oesapa', '2001-03-15', 'Kristen Protestan', 'Jln. Monitor', '082189368463'),
-(1823735233, 5, 'Vredly Ndung', 'Kupang', '2001-07-26', 'Kristen Protestan', 'Pasirpanjang', '085792892784');
-
 -- --------------------------------------------------------
 
 --
@@ -142,18 +109,10 @@ INSERT INTO `mahasiswa` (`nim_mhs`, `id_prodi`, `nama_mhs`, `tempat_lahir`, `tan
 
 CREATE TABLE `mata_kuliah` (
   `id_mk` int(11) NOT NULL,
-  `nidn_dosen` int(11) NOT NULL,
+  `nip_dosen` varchar(50) NOT NULL,
   `nama_matakuliah` varchar(225) NOT NULL,
   `sks` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `mata_kuliah`
---
-
-INSERT INTO `mata_kuliah` (`id_mk`, `nidn_dosen`, `nama_matakuliah`, `sks`) VALUES
-(11, 2147483647, 'Metode Penulisan', 3),
-(12, 2147483647, 'Jaringan Komputer 1', 3);
 
 -- --------------------------------------------------------
 
@@ -163,17 +122,9 @@ INSERT INTO `mata_kuliah` (`id_mk`, `nidn_dosen`, `nama_matakuliah`, `sks`) VALU
 
 CREATE TABLE `prodi` (
   `id_prodi` int(11) NOT NULL,
-  `id_fakultas` int(11) NOT NULL,
+  `id_jurusan` int(11) NOT NULL,
   `nama_prodi` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `prodi`
---
-
-INSERT INTO `prodi` (`id_prodi`, `id_fakultas`, `nama_prodi`) VALUES
-(5, 5, 'Metode Penulisan'),
-(6, 5, 'Jaringan Komputer 1');
 
 --
 -- Indexes for dumped tables
@@ -191,13 +142,7 @@ ALTER TABLE `absen`
 -- Indeks untuk tabel `dosen`
 --
 ALTER TABLE `dosen`
-  ADD PRIMARY KEY (`nidn_dosen`);
-
---
--- Indeks untuk tabel `fakultas`
---
-ALTER TABLE `fakultas`
-  ADD PRIMARY KEY (`id_fakultas`);
+  ADD PRIMARY KEY (`nip_dosen`);
 
 --
 -- Indeks untuk tabel `jadwal`
@@ -205,6 +150,12 @@ ALTER TABLE `fakultas`
 ALTER TABLE `jadwal`
   ADD PRIMARY KEY (`id_jadwal`),
   ADD KEY `id_mk` (`id_mk`);
+
+--
+-- Indeks untuk tabel `jurusan`
+--
+ALTER TABLE `jurusan`
+  ADD PRIMARY KEY (`id_jurusan`);
 
 --
 -- Indeks untuk tabel `mahasiswa`
@@ -217,15 +168,14 @@ ALTER TABLE `mahasiswa`
 -- Indeks untuk tabel `mata_kuliah`
 --
 ALTER TABLE `mata_kuliah`
-  ADD PRIMARY KEY (`id_mk`),
-  ADD KEY `nidn_dosen` (`nidn_dosen`);
+  ADD PRIMARY KEY (`id_mk`);
 
 --
 -- Indeks untuk tabel `prodi`
 --
 ALTER TABLE `prodi`
   ADD PRIMARY KEY (`id_prodi`),
-  ADD KEY `id_fakultas` (`id_fakultas`);
+  ADD KEY `id_fakultas` (`id_jurusan`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -235,43 +185,37 @@ ALTER TABLE `prodi`
 -- AUTO_INCREMENT untuk tabel `absen`
 --
 ALTER TABLE `absen`
-  MODIFY `id_absen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT untuk tabel `dosen`
---
-ALTER TABLE `dosen`
-  MODIFY `nidn_dosen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
-
---
--- AUTO_INCREMENT untuk tabel `fakultas`
---
-ALTER TABLE `fakultas`
-  MODIFY `id_fakultas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_absen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `jadwal`
 --
 ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `jurusan`
+--
+ALTER TABLE `jurusan`
+  MODIFY `id_jurusan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `nim_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1823735234;
+  MODIFY `nim_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1823735213;
 
 --
 -- AUTO_INCREMENT untuk tabel `mata_kuliah`
 --
 ALTER TABLE `mata_kuliah`
-  MODIFY `id_mk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_mk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `prodi`
 --
 ALTER TABLE `prodi`
-  MODIFY `id_prodi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_prodi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -297,16 +241,10 @@ ALTER TABLE `mahasiswa`
   ADD CONSTRAINT `mahasiswa_ibfk_1` FOREIGN KEY (`id_prodi`) REFERENCES `prodi` (`id_prodi`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `mata_kuliah`
---
-ALTER TABLE `mata_kuliah`
-  ADD CONSTRAINT `mata_kuliah_ibfk_2` FOREIGN KEY (`nidn_dosen`) REFERENCES `dosen` (`nidn_dosen`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Ketidakleluasaan untuk tabel `prodi`
 --
 ALTER TABLE `prodi`
-  ADD CONSTRAINT `prodi_ibfk_1` FOREIGN KEY (`id_fakultas`) REFERENCES `fakultas` (`id_fakultas`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `prodi_ibfk_1` FOREIGN KEY (`id_jurusan`) REFERENCES `jurusan` (`id_jurusan`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
