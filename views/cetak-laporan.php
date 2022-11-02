@@ -14,7 +14,7 @@ $absen = mysqli_query($conn, "SELECT * FROM absen
   JOIN jadwal ON absen.id_jadwal=jadwal.id_jadwal 
   JOIN mahasiswa ON absen.nim_mhs=mahasiswa.nim_mhs 
   JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk
-  JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen
+  JOIN dosen ON mata_kuliah.nip_dosen=dosen.nip_dosen
   WHERE absen.id_jadwal='$id_jadwal'
 ");
 

@@ -115,7 +115,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                           <th scope="col">Alamat</th>
                           <th scope="col">No. Handphone</th>
                           <th scope="col">Program Studi</th>
-                          <th scope="col">Fakultas</th>
+                          <th scope="col">Jurusan</th>
                           <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                             <th scope="col" colspan="2">Aksi</th>
                           <?php } ?>
@@ -140,7 +140,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                               <td><?= $row['alamat'] ?></td>
                               <td><?= $row['no_hp'] ?></td>
                               <td><?= $row['nama_prodi'] ?></td>
-                              <td><?= $row['nama_fakultas'] ?></td>
+                              <td><?= $row['nama_jurusan'] ?></td>
                               <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                 <td>
                                   <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubah<?= $row['nim_mhs'] ?>">

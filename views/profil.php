@@ -59,7 +59,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                           <option value="P">Perempuan</option>
                         </select>
                       </div>
-                      <input type="hidden" name="nidn" value="<?= $row['nidn_dosen'] ?>">
+                      <input type="hidden" name="nidn" value="<?= $row['nip_dosen'] ?>">
                       <button type="submit" name="ubah-profil-dosen" class="btn btn-primary text-white">Ubah</button>
                     <?php }
                     if ($_SESSION['data-user']['role'] == 3) { ?>
@@ -110,9 +110,9 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     <table class="table table-sm table-borderless">
                       <tbody>
                         <tr>
-                          <th scope="row">NIDN</th>
+                          <th scope="row">NIP</th>
                           <td>:</td>
-                          <td style="width: 450px;"><?= $row['nidn_dosen'] ?></td>
+                          <td style="width: 450px;"><?= $row['nip_dosen'] ?></td>
                         </tr>
                         <tr>
                           <th scope="row">Nama</th>

@@ -6,13 +6,13 @@
     $id = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nim-nidn']))));
     $password = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['password']))));
     if ($id != $password) {
-      $_SESSION['message-danger'] = "Maaf, NIM/NIDN dan Password yang anda masukan belum sesuai.";
+      $_SESSION['message-danger'] = "Maaf, NIM/NIP dan Password yang anda masukan belum sesuai.";
       $_SESSION['time-message'] = time();
       return false;
     }
 
     // check account
-    $checkAccount1 = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen='$id'");
+    $checkAccount1 = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen='$id'");
     if (mysqli_num_rows($checkAccount1) > 0) {
       $row = mysqli_fetch_assoc($checkAccount1);
       if ($row['jabatan'] == "admin") {
@@ -21,7 +21,7 @@
         $role = 2;
       }
       $_SESSION['data-user'] = [
-        'id' => $row['nidn_dosen'],
+        'id' => $row['nip_dosen'],
         'role' => $role,
         'username' => $row['nama_dosen'],
       ];
@@ -35,7 +35,7 @@
           'username' => $row['nama_mhs'],
         ];
       } else if (mysqli_num_rows($checkAccount2) == 0) {
-        $_SESSION['message-danger'] = "Maaf, NIM/NIDN yang anda masukan belum terdaftar.";
+        $_SESSION['message-danger'] = "Maaf, NIM/NIP yang anda masukan belum terdaftar.";
         $_SESSION['time-message'] = time();
         return false;
       }
@@ -138,7 +138,7 @@ if (isset($_SESSION['data-user'])) {
       $nidn = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nidn']))));
       $nama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nama']))));
       $jk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['jk']))));
-      mysqli_query($conn, "UPDATE dosen SET nama_dosen='$nama', jenis_kelamin='$jk' WHERE nidn_dosen='$nidn'");
+      mysqli_query($conn, "UPDATE dosen SET nama_dosen='$nama', jenis_kelamin='$jk' WHERE nip_dosen='$nidn'");
       return mysqli_affected_rows($conn);
     }
     function ubah_presensi($data)
@@ -155,9 +155,9 @@ if (isset($_SESSION['data-user'])) {
       {
         global $conn;
         $nidn = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nidn']))));
-        $checkNIDN = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen='$nidn'");
+        $checkNIDN = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen='$nidn'");
         if (mysqli_num_rows($checkNIDN) > 0) {
-          $_SESSION['message-danger'] = "Maaf, NIDN yang anda masukan sudah terdaftar.";
+          $_SESSION['message-danger'] = "Maaf, NIP yang anda masukan sudah terdaftar.";
           $_SESSION['time-message'] = time();
           return false;
         }
@@ -165,7 +165,7 @@ if (isset($_SESSION['data-user'])) {
         $jk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['jk']))));
         $gelar = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['gelar']))));
         $jabatan = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['jabatan']))));
-        mysqli_query($conn, "INSERT INTO dosen(nidn_dosen,nama_dosen,jenis_kelamin,gelar,jabatan) VALUES('$nidn','$nama','$jk','$gelar','$jabatan')");
+        mysqli_query($conn, "INSERT INTO dosen(nip_dosen,nama_dosen,jenis_kelamin,gelar,jabatan) VALUES('$nidn','$nama','$jk','$gelar','$jabatan')");
         return mysqli_affected_rows($conn);
       }
       function ubah_dosen($data)
@@ -174,9 +174,9 @@ if (isset($_SESSION['data-user'])) {
         $nidnOld = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nidnOld']))));
         $nidn = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nidn']))));
         if ($nidn != $nidnOld) {
-          $checkNIDN = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen='$nidn'");
+          $checkNIDN = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen='$nidn'");
           if (mysqli_num_rows($checkNIDN) > 0) {
-            $_SESSION['message-danger'] = "Maaf, NIDN yang anda masukan sudah terdaftar.";
+            $_SESSION['message-danger'] = "Maaf, NIP yang anda masukan sudah terdaftar.";
             $_SESSION['time-message'] = time();
             return false;
           }
@@ -185,14 +185,14 @@ if (isset($_SESSION['data-user'])) {
         $jk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['jk']))));
         $gelar = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['gelar']))));
         $jabatan = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['jabatan']))));
-        mysqli_query($conn, "UPDATE dosen SET nidn_dosen='$nidn', nama_dosen='$nama', jenis_kelamin='$jk', gelar='$gelar', jabatan='$jabatan' WHERE nidn_dosen='$nidnOld'");
+        mysqli_query($conn, "UPDATE dosen SET nip_dosen='$nidn', nama_dosen='$nama', jenis_kelamin='$jk', gelar='$gelar', jabatan='$jabatan' WHERE nip_dosen='$nidnOld'");
         return mysqli_affected_rows($conn);
       }
       function hapus_dosen($data)
       {
         global $conn;
         $nidnOld = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nidnOld']))));
-        mysqli_query($conn, "DELETE FROM dosen WHERE nidn_dosen='$nidnOld'");
+        mysqli_query($conn, "DELETE FROM dosen WHERE nip_dosen='$nidnOld'");
         return mysqli_affected_rows($conn);
       }
       function tambah_prodi($data)
@@ -206,7 +206,7 @@ if (isset($_SESSION['data-user'])) {
           return false;
         }
         $fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['fakultas']))));
-        mysqli_query($conn, "INSERT INTO prodi(id_fakultas,nama_prodi) VALUES('$fakultas','$nama')");
+        mysqli_query($conn, "INSERT INTO prodi(id_jurusan,nama_prodi) VALUES('$fakultas','$nama')");
         return mysqli_affected_rows($conn);
       }
       function ubah_prodi($data)
@@ -224,7 +224,7 @@ if (isset($_SESSION['data-user'])) {
           }
         }
         $fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['fakultas']))));
-        mysqli_query($conn, "UPDATE prodi SET id_fakultas='$fakultas', nama_prodi='$nama' WHERE id_prodi='$id_prodi'");
+        mysqli_query($conn, "UPDATE prodi SET id_jurusan='$fakultas', nama_prodi='$nama' WHERE id_prodi='$id_prodi'");
         return mysqli_affected_rows($conn);
       }
       function hapus_prodi($data)
@@ -238,13 +238,13 @@ if (isset($_SESSION['data-user'])) {
       {
         global $conn;
         $nama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nama']))));
-        $checkNama = mysqli_query($conn, "SELECT * FROM fakultas WHERE nama_fakultas='$nama'");
+        $checkNama = mysqli_query($conn, "SELECT * FROM jurusan WHERE nama_jurusan='$nama'");
         if (mysqli_num_rows($checkNama) > 0) {
           $_SESSION['message-danger'] = "Maaf, Nama yang anda masukan sudah ada.";
           $_SESSION['time-message'] = time();
           return false;
         }
-        mysqli_query($conn, "INSERT INTO fakultas(nama_fakultas) VALUES('$nama')");
+        mysqli_query($conn, "INSERT INTO jurusan(nama_jurusan) VALUES('$nama')");
         return mysqli_affected_rows($conn);
       }
       function ubah_fakultas($data)
@@ -254,21 +254,21 @@ if (isset($_SESSION['data-user'])) {
         $namaOld = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['namaOld']))));
         $nama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nama']))));
         if ($nama != $namaOld) {
-          $checkNama = mysqli_query($conn, "SELECT * FROM fakultas WHERE nama_fakultas='$nama'");
+          $checkNama = mysqli_query($conn, "SELECT * FROM jurusan WHERE nama_jurusan='$nama'");
           if (mysqli_num_rows($checkNama) > 0) {
             $_SESSION['message-danger'] = "Maaf, Nama yang anda masukan sudah ada.";
             $_SESSION['time-message'] = time();
             return false;
           }
         }
-        mysqli_query($conn, "UPDATE fakultas SET nama_fakultas='$nama' WHERE id_fakultas='$id_fakultas'");
+        mysqli_query($conn, "UPDATE jurusan SET nama_jurusan='$nama' WHERE id_jurusan='$id_fakultas'");
         return mysqli_affected_rows($conn);
       }
       function hapus_fakultas($data)
       {
         global $conn;
         $id_fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-fakultas']))));
-        mysqli_query($conn, "DELETE FROM fakultas WHERE id_fakultas='$id_fakultas'");
+        mysqli_query($conn, "DELETE FROM jurusan WHERE id_jurusan='$id_fakultas'");
         return mysqli_affected_rows($conn);
       }
       function tambah_mahasiswa($data)
@@ -337,7 +337,7 @@ if (isset($_SESSION['data-user'])) {
           return false;
         }
         $sks = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['sks']))));
-        mysqli_query($conn, "INSERT INTO mata_kuliah(nidn_dosen,nama_matakuliah,sks) VALUES('$nidn','$nama','$sks')");
+        mysqli_query($conn, "INSERT INTO mata_kuliah(nip_dosen,nama_matakuliah,sks) VALUES('$nidn','$nama','$sks')");
         return mysqli_affected_rows($conn);
       }
       function ubah_mk($data)
@@ -356,7 +356,7 @@ if (isset($_SESSION['data-user'])) {
           }
         }
         $sks = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['sks']))));
-        mysqli_query($conn, "UPDATE mata_kuliah SET nidn_dosen='$nidn', nama_matakuliah='$nama', sks='$sks' WHERE id_mk='$id_mk'");
+        mysqli_query($conn, "UPDATE mata_kuliah SET nip_dosen='$nidn', nama_matakuliah='$nama', sks='$sks' WHERE id_mk='$id_mk'");
         return mysqli_affected_rows($conn);
       }
       function hapus_mk($data)

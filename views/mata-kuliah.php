@@ -51,7 +51,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                       <select name="nidn" class="form-select" aria-label="Default select example" required>
                         <option selected value="">Pilih Dosen</option>
                         <?php foreach ($selectDosen as $row_dos) : ?>
-                          <option value="<?= $row_dos['nidn_dosen'] ?>"><?= $row_dos['nama_dosen'] ?></option>
+                          <option value="<?= $row_dos['nip_dosen'] ?>"><?= $row_dos['nama_dosen'] ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
@@ -99,7 +99,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                             <tr>
                               <th scope="row"><?= $no; ?></th>
                               <td><?= $row['nama_matakuliah'] ?></td>
-                              <td><?= $row['nama_dosen'] ?> <small class="text-success">(<?= $row['nidn_dosen'] ?>)</small></td>
+                              <td><?= $row['nama_dosen'] ?> <small class="text-success">(<?= $row['nip_dosen'] ?>)</small></td>
                               <td><?= $row['sks'] ?></td>
                               <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                 <td>
@@ -123,7 +123,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                               <select name="nidn" class="form-select" aria-label="Default select example" required>
                                                 <option selected value="">Pilih Dosen</option>
                                                 <?php foreach ($selectDosen as $row_dos) : ?>
-                                                  <option value="<?= $row_dos['nidn_dosen'] ?>"><?= $row_dos['nama_dosen'] ?></option>
+                                                  <option value="<?= $row_dos['nip_dosen'] ?>"><?= $row_dos['nama_dosen'] ?></option>
                                                 <?php endforeach; ?>
                                               </select>
                                             </div>

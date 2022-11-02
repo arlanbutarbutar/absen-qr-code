@@ -1,4 +1,0 @@
-[22-Oct-2022 21:39:28 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/tugf6755/public_html/absen/controller/script.php on line 4
-[22-Oct-2022 21:50:16 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/tugf6755/public_html/absen/controller/script.php on line 4
-[22-Oct-2022 21:51:38 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/tugf6755/public_html/absen/controller/script.php on line 4
-[22-Oct-2022 21:53:36 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/tugf6755/public_html/absen/controller/script.php on line 4

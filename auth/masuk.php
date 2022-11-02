@@ -36,7 +36,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
           <div class="auth-form-container text-start mx-auto">
             <form class="auth-form auth-signup-form" method="POST">
               <div class="mb-3">
-                <label class="sr-only" for="nim-nidn">NIM/NIDN</label>
+                <label class="sr-only" for="nim-nidn">NIM/NIP</label>
                 <input id="nim-nidn" name="nim-nidn" type="number" class="form-control signup-name" placeholder="NIM/NIDN" required>
               </div>
               <div class="mb-3">

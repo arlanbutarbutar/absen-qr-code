@@ -52,7 +52,7 @@ if (isset($_SESSION['data-user'])) {
   $idUser = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_SESSION['data-user']['id']))));
 
   // ringkasan
-  $count_dosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser'");
+  $count_dosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen!='$idUser'");
   $countDosen = mysqli_num_rows($count_dosen);
   $count_mhs = mysqli_query($conn, "SELECT * FROM mahasiswa");
   $countMhs = mysqli_num_rows($count_mhs);
@@ -63,7 +63,7 @@ if (isset($_SESSION['data-user'])) {
 
   if ($_SESSION['data-user']['role'] <= 2) {
     // profil
-    $profil = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen='$idUser'");
+    $profil = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen='$idUser'");
     if (isset($_POST['ubah-profil-dosen'])) {
       if (ubah_profil_dosen($_POST) > 0) {
         $_SESSION['message-success'] = "Profil berhasil di ubah.";
@@ -75,24 +75,24 @@ if (isset($_SESSION['data-user'])) {
 
     // mahasiswa
     $data_role2 = 25;
-    $result_role2 = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser'");
+    $result_role2 = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen!='$idUser'");
     $total_role2 = mysqli_num_rows($result_role2);
     $total_page_role2 = ceil($total_role2 / $data_role2);
     $page_role2 = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
     $awal_data_role2 = ($page_role2 > 1) ? ($page_role2 * $data_role2) - $data_role2 : 0;
     $mahasiswa = mysqli_query($conn, "SELECT * FROM mahasiswa 
       JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi 
-      JOIN fakultas ON prodi.id_fakultas=fakultas.id_fakultas 
+      JOIN jurusan ON prodi.id_jurusan=jurusan.id_jurusan 
       ORDER BY mahasiswa.nim_mhs ASC LIMIT $awal_data_role2, $data_role2
     ");
 
     // select data
     $selectProdi = mysqli_query($conn, "SELECT * FROM prodi");
-    $selectFakultas = mysqli_query($conn, "SELECT * FROM fakultas");
+    $selectFakultas = mysqli_query($conn, "SELECT * FROM jurusan");
 
     // prodi/fakultas
-    $prodi = mysqli_query($conn, "SELECT * FROM prodi JOIN fakultas ON prodi.id_fakultas=fakultas.id_fakultas ORDER BY prodi.id_prodi DESC");
-    $fakultas = mysqli_query($conn, "SELECT * FROM fakultas ORDER BY id_fakultas DESC");
+    $prodi = mysqli_query($conn, "SELECT * FROM prodi JOIN jurusan ON prodi.id_jurusan=jurusan.id_jurusan ORDER BY prodi.id_prodi DESC");
+    $fakultas = mysqli_query($conn, "SELECT * FROM jurusan ORDER BY id_jurusan DESC");
 
     // jadwal
     if (isset($_POST['buat-jadwal'])) {
@@ -107,7 +107,7 @@ if (isset($_SESSION['data-user'])) {
     }
     if (isset($_SESSION['jadwal'])) {
       $id_mk = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_SESSION['jadwal']['id-mk']))));
-      $jadwal = mysqli_query($conn, "SELECT * FROM jadwal JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen WHERE jadwal.id_mk='$id_mk' ORDER BY jadwal.id_jadwal DESC");
+      $jadwal = mysqli_query($conn, "SELECT * FROM jadwal JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk JOIN dosen ON mata_kuliah.nip_dosen=dosen.nip_dosen WHERE jadwal.id_mk='$id_mk' ORDER BY jadwal.id_jadwal DESC");
     }
 
     // absen
@@ -126,12 +126,12 @@ if (isset($_SESSION['data-user'])) {
     if ($_SESSION['data-user']['role'] == 1) {
       // dosen
       $data_role1 = 25;
-      $result_role1 = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser'");
+      $result_role1 = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen!='$idUser'");
       $total_role1 = mysqli_num_rows($result_role1);
       $total_page_role1 = ceil($total_role1 / $data_role1);
       $page_role1 = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
       $awal_data_role1 = ($page_role1 > 1) ? ($page_role1 * $data_role1) - $data_role1 : 0;
-      $dosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser' ORDER BY nidn_dosen ASC LIMIT $awal_data_role1, $data_role1");
+      $dosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen!='$idUser' ORDER BY nip_dosen ASC LIMIT $awal_data_role1, $data_role1");
       if (isset($_POST['tambah-dosen'])) {
         if (tambah_dosen($_POST) > 0) {
           $_SESSION['message-success'] = "Dosen baru berhasil di tambahkan.";
@@ -186,7 +186,7 @@ if (isset($_SESSION['data-user'])) {
       // fakultas
       if (isset($_POST['tambah-fakultas'])) {
         if (tambah_fakultas($_POST) > 0) {
-          $_SESSION['message-success'] = "Fakultas baru berhasil di tambahkan.";
+          $_SESSION['message-success'] = "Jurusan baru berhasil di tambahkan.";
           $_SESSION['time-message'] = time();
           header("Location: " . $_SESSION['page-url']);
           exit();
@@ -194,7 +194,7 @@ if (isset($_SESSION['data-user'])) {
       }
       if (isset($_POST['ubah-fakultas'])) {
         if (ubah_fakultas($_POST) > 0) {
-          $_SESSION['message-success'] = "Fakultas " . $_POST['namaOld'] . " berhasil di ubah.";
+          $_SESSION['message-success'] = "Jurusan " . $_POST['namaOld'] . " berhasil di ubah.";
           $_SESSION['time-message'] = time();
           header("Location: " . $_SESSION['page-url']);
           exit();
@@ -202,7 +202,7 @@ if (isset($_SESSION['data-user'])) {
       }
       if (isset($_POST['hapus-fakultas'])) {
         if (hapus_fakultas($_POST) > 0) {
-          $_SESSION['message-success'] = "Fakultas " . $_POST['namaOld'] . " berhasil di hapus.";
+          $_SESSION['message-success'] = "Jurusan " . $_POST['namaOld'] . " berhasil di hapus.";
           $_SESSION['time-message'] = time();
           header("Location: " . $_SESSION['page-url']);
           exit();
@@ -295,20 +295,20 @@ if (isset($_SESSION['data-user'])) {
 
   if ($_SESSION['data-user']['role'] <= 3) {
     // mata kuliah
-    $selectDosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nidn_dosen!='$idUser'");
+    $selectDosen = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen!='$idUser'");
     $data_role3 = 25;
-    $result_role3 = mysqli_query($conn, "SELECT * FROM mata_kuliah JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen");
+    $result_role3 = mysqli_query($conn, "SELECT * FROM mata_kuliah JOIN dosen ON mata_kuliah.nip_dosen=dosen.nip_dosen");
     $total_role3 = mysqli_num_rows($result_role3);
     $total_page_role3 = ceil($total_role3 / $data_role3);
     $page_role3 = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
     $awal_data_role3 = ($page_role3 > 1) ? ($page_role3 * $data_role3) - $data_role3 : 0;
     $mata_kuliah = mysqli_query($conn, "SELECT * FROM mata_kuliah 
-      JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen 
+      JOIN dosen ON mata_kuliah.nip_dosen=dosen.nip_dosen 
       ORDER BY mata_kuliah.id_mk DESC LIMIT $awal_data_role3, $data_role3
     ");
 
     if ($_SESSION['data-user']['role'] == 3) {
-      $profil = mysqli_query($conn, "SELECT * FROM mahasiswa JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi JOIN fakultas ON prodi.id_fakultas=fakultas.id_fakultas WHERE mahasiswa.nim_mhs='$idUser'");
+      $profil = mysqli_query($conn, "SELECT * FROM mahasiswa JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi JOIN jurusan ON prodi.id_jurusan=jurusan.id_jurusan WHERE mahasiswa.nim_mhs='$idUser'");
       if (isset($_POST['ubah-profil-mhs'])) {
         if (ubah_profil_mhs($_POST) > 0) {
           $_SESSION['message-success'] = "Profil berhasil di ubah.";
@@ -323,7 +323,7 @@ if (isset($_SESSION['data-user'])) {
         JOIN mahasiswa ON absen.nim_mhs=mahasiswa.nim_mhs 
         JOIN jadwal ON absen.id_jadwal=jadwal.id_jadwal 
         JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk 
-        JOIN dosen ON mata_kuliah.nidn_dosen=dosen.nidn_dosen 
+        JOIN dosen ON mata_kuliah.nip_dosen=dosen.nip_dosen 
         WHERE mahasiswa.nim_mhs='$idUser'
       ");
     }

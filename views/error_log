@@ -1,1 +1,0 @@
-[24-Oct-2022 00:50:28 Asia/Jakarta] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/gaslvldx/tugasakhir.my.id/absen-qr.tugasakhir.my.id/controller/functions.php on line 352
