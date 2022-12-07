@@ -89,7 +89,7 @@ $_SESSION['page-url'] = "./";
             <div class="card border-0 shadow">
               <div class="card-body">
                 <?php if (mysqli_num_rows($search_mk) == 0) { ?>
-                  <p>Absensi Mata Kuliah yang anda cari belum tersedia</p>
+                  <p>Absensi Mata Kuliah <?= $mk; ?> belum tersedia</p>
                   <?php } else if (mysqli_num_rows($search_mk) > 0) {
                   while ($row = mysqli_fetch_assoc($search_mk)) { ?>
                     <div class="d-flex justify-content-between mt-3">

@@ -1,8 +1,8 @@
 <?php require_once("../controller/script.php");
 require_once("redirect.php");
 
-$_SESSION['page-name'] = "Prodi & Jurusan";
-$_SESSION['page-url'] = "prodi-jurusan";
+$_SESSION['page-name'] = "Prodi & Kelas";
+$_SESSION['page-url'] = "prodi-kelas";
 $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 
@@ -43,7 +43,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
           <div class="accordion-item border-0 shadow">
             <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Program Studi
+                Kelas
               </button>
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -53,22 +53,22 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     <div class="col-lg-4">
                       <div class="card border-0 shadow">
                         <div class="card-body text-center">
-                          <h4>Tambah Program Studi</h4>
+                          <h4>Tambah Kelas</h4>
                           <form action="" method="post">
                             <div class="mb-3 mt-4">
                               <label for="nama" class="form-label">Nama</label>
                               <input type="text" name="nama" class="form-control" id="nama" placeholder="Nama" required>
                             </div>
                             <div class="mb-3">
-                              <label for="fakultas" class="form-label">Jurusan</label>
-                              <select name="fakultas" class="form-select" aria-label="Default select example" required>
-                                <option selected value="">Pilih Jurusan</option>
-                                <?php foreach ($selectFakultas as $row_fak) : ?>
-                                  <option value="<?= $row_fak['id_jurusan'] ?>"><?= $row_fak['nama_jurusan'] ?></option>
+                              <label for="prodi" class="form-label">Program Studi</label>
+                              <select name="id-prodi" class="form-select" aria-label="Default select example" required>
+                                <option selected value="">Pilih Program Studi</option>
+                                <?php foreach ($selectProdi as $row_p) : ?>
+                                  <option value="<?= $row_p['id_prodi'] ?>"><?= $row_p['nama_prodi'] ?></option>
                                 <?php endforeach; ?>
                               </select>
                             </div>
-                            <button type="submit" name="tambah-prodi" class="btn btn-primary text-white">Tambah</button>
+                            <button type="submit" name="tambah-kelas" class="btn btn-primary text-white">Tambah</button>
                           </form>
                         </div>
                       </div>
@@ -86,60 +86,60 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 <tr>
                                   <th scope="col">#</th>
                                   <th scope="col">Nama Program Studi</th>
-                                  <th scope="col">Nama Jurusan</th>
+                                  <th scope="col">Nama Kelas</th>
                                   <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                     <th scope="col" colspan="2">Aksi</th>
                                   <?php } ?>
                                 </tr>
                               </thead>
                               <tbody id="search-data">
-                                <?php if (mysqli_num_rows($prodi) == 0) { ?>
+                                <?php if (mysqli_num_rows($kelas) == 0) { ?>
                                   <tr class="text-center">
-                                    <th scope="row" colspan="5">Belum ada data program studi</th>
+                                    <th scope="row" colspan="5">Belum ada data kelas</th>
                                   </tr>
-                                  <?php } else if (mysqli_num_rows($prodi) > 0) {
+                                  <?php } else if (mysqli_num_rows($kelas) > 0) {
                                   $no = 1;
-                                  while ($row_prodi = mysqli_fetch_assoc($prodi)) { ?>
+                                  while ($row_kelas = mysqli_fetch_assoc($kelas)) { ?>
                                     <tr>
                                       <th scope="row"><?= $no; ?></th>
-                                      <td><?= $row_prodi['nama_prodi'] ?></td>
-                                      <td><?= $row_prodi['nama_jurusan'] ?></td>
+                                      <td><?= $row_kelas['nama_prodi'] ?></td>
+                                      <td><?= $row_kelas['nama_kelas'] ?></td>
                                       <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                         <td>
-                                          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubah<?= $row_prodi['id_prodi'] ?>">
+                                          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubah<?= $row_kelas['id_kelas'] ?>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                               <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                           </button>
-                                          <div class="modal fade" id="ubah<?= $row_prodi['id_prodi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal fade" id="ubah<?= $row_kelas['id_kelas'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                               <div class="modal-content">
                                                 <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLabel">Ubah data <?= $row_prodi['nama_prodi'] ?></h5>
+                                                  <h5 class="modal-title" id="exampleModalLabel">Ubah data <?= $row_kelas['nama_kelas'] ?></h5>
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <form action="" method="post">
                                                   <div class="modal-body text-center">
                                                     <div class="mb-3 mt-4">
                                                       <label for="nama" class="form-label">Nama</label>
-                                                      <input type="text" name="nama" value="<?= $row_prodi['nama_prodi'] ?>" class="form-control" id="nama" placeholder="Nama" required>
+                                                      <input type="text" name="nama" value="<?= $row_kelas['nama_kelas'] ?>" class="form-control" id="nama" placeholder="Nama" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                      <label for="fakultas" class="form-label">Jurusan</label>
+                                                      <label for="fakultas" class="form-label">Kelas</label>
                                                       <select name="fakultas" class="form-select" aria-label="Default select example" required>
-                                                        <option selected value="">Pilih Jurusan</option>
-                                                        <?php foreach ($selectFakultas as $row_fak) : ?>
-                                                          <option value="<?= $row_fak['id_jurusan'] ?>"><?= $row_fak['nama_jurusan'] ?></option>
+                                                        <option selected value="">Pilih Kelas</option>
+                                                        <?php foreach ($selectKelas as $row_kelas) : ?>
+                                                          <option value="<?= $row_kelas['id_kelas'] ?>"><?= $row_kelas['nama_kelas'] ?></option>
                                                         <?php endforeach; ?>
                                                       </select>
                                                     </div>
                                                   </div>
                                                   <div class="modal-footer justify-content-center">
-                                                    <input type="hidden" name="id-prodi" value="<?= $row_prodi['id_prodi'] ?>">
-                                                    <input type="hidden" name="namaOld" value="<?= $row_prodi['nama_prodi'] ?>">
+                                                    <input type="hidden" name="id-kelas" value="<?= $row_kelas['id_kelas'] ?>">
+                                                    <input type="hidden" name="namaOld" value="<?= $row_kelas['nama_kelas'] ?>">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" name="ubah-prodi" class="btn btn-warning">Ubah</button>
+                                                    <button type="submit" name="ubah-kelas" class="btn btn-warning">Ubah</button>
                                                   </div>
                                                 </form>
                                               </div>
@@ -147,28 +147,28 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                           </div>
                                         </td>
                                         <td>
-                                          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus<?= $row_prodi['id_prodi'] ?>">
+                                          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus<?= $row_kelas['id_kelas'] ?>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                               <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                               <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                                             </svg>
                                           </button>
-                                          <div class="modal fade" id="hapus<?= $row_prodi['id_prodi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal fade" id="hapus<?= $row_kelas['id_kelas'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                               <div class="modal-content">
                                                 <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLabel">Hapus data <?= $row_prodi['nama_prodi'] ?></h5>
+                                                  <h5 class="modal-title" id="exampleModalLabel">Hapus data <?= $row_kelas['nama_kelas'] ?></h5>
                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-center">
-                                                  Anda yakin ingin menghapus data dari <?= $row_prodi['nama_prodi'] ?>?
+                                                  Anda yakin ingin menghapus data dari <?= $row_kelas['nama_kelas'] ?>?
                                                 </div>
                                                 <form action="" method="post">
                                                   <div class="modal-footer justify-content-center">
-                                                    <input type="hidden" name="id-prodi" value="<?= $row_prodi['id_prodi'] ?>">
-                                                    <input type="hidden" name="namaOld" value="<?= $row_prodi['nama_prodi'] ?>">
+                                                    <input type="hidden" name="id-kelas" value="<?= $row_kelas['id_kelas'] ?>">
+                                                    <input type="hidden" name="namaOld" value="<?= $row_kelas['nama_kelas'] ?>">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" name="hapus-prodi" class="btn btn-danger">Hapus</button>
+                                                    <button type="submit" name="hapus-kelas" class="btn btn-danger">Hapus</button>
                                                   </div>
                                                 </form>
                                               </div>
@@ -192,7 +192,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
               <div class="accordion-item border-0 shadow">
                 <h2 class="accordion-header" id="headingTwo">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Jurusan
+                    Program Studi
                   </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
@@ -202,13 +202,13 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         <div class="col-lg-4">
                           <div class="card border-0 shadow">
                             <div class="card-body text-center">
-                              <h4>Tambah Jurusan</h4>
+                              <h4>Tambah Program Studi</h4>
                               <form action="" method="post">
                                 <div class="mb-3 mt-4">
                                   <label for="nama" class="form-label">Nama</label>
                                   <input type="text" name="nama" class="form-control" id="nama" placeholder="Nama" required>
                                 </div>
-                                <button type="submit" name="tambah-fakultas" class="btn btn-primary text-white">Tambah</button>
+                                <button type="submit" name="tambah-prodi" class="btn btn-primary text-white">Tambah</button>
                               </form>
                             </div>
                           </div>
@@ -225,50 +225,50 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                   <thead>
                                     <tr>
                                       <th scope="col">#</th>
-                                      <th scope="col">Nama Jurusan</th>
+                                      <th scope="col">Nama Progran Studi</th>
                                       <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                         <th scope="col" colspan="2">Aksi</th>
                                       <?php } ?>
                                     </tr>
                                   </thead>
                                   <tbody id="search-data">
-                                    <?php if (mysqli_num_rows($fakultas) == 0) { ?>
+                                    <?php if (mysqli_num_rows($prodi) == 0) { ?>
                                       <tr class="text-center">
-                                        <th scope="row" colspan="4">Belum ada data jurusan</th>
+                                        <th scope="row" colspan="4">Belum ada data Progran Studi</th>
                                       </tr>
-                                      <?php } else if (mysqli_num_rows($fakultas) > 0) {
+                                      <?php } else if (mysqli_num_rows($prodi) > 0) {
                                       $no = 1;
-                                      while ($row_fakultas = mysqli_fetch_assoc($fakultas)) { ?>
+                                      while ($row_prodi = mysqli_fetch_assoc($prodi)) { ?>
                                         <tr>
                                           <th scope="row"><?= $no; ?></th>
-                                          <td><?= $row_fakultas['nama_jurusan'] ?></td>
+                                          <td><?= $row_prodi['nama_prodi'] ?></td>
                                           <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                             <td>
-                                              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubah<?= $row_fakultas['id_jurusan'] ?>">
+                                              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubah-prodi<?= $row_prodi['id_prodi'] ?>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                                   <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                                 </svg>
                                               </button>
-                                              <div class="modal fade" id="ubah<?= $row_fakultas['id_jurusan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                              <div class="modal fade" id="ubah-prodi<?= $row_prodi['id_prodi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                   <div class="modal-content">
                                                     <div class="modal-header">
-                                                      <h5 class="modal-title" id="exampleModalLabel">Ubah data <?= $row_fakultas['nama_jurusan'] ?></h5>
+                                                      <h5 class="modal-title" id="exampleModalLabel">Ubah data <?= $row_prodi['nama_prodi'] ?></h5>
                                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <form action="" method="post">
                                                       <div class="modal-body text-center">
                                                         <div class="mb-3 mt-4">
                                                           <label for="nama" class="form-label">Nama</label>
-                                                          <input type="text" name="nama" value="<?= $row_fakultas['nama_jurusan'] ?>" class="form-control" id="nama" placeholder="Nama" required>
+                                                          <input type="text" name="nama" value="<?= $row_prodi['nama_prodi'] ?>" class="form-control" id="nama" placeholder="Nama" required>
                                                         </div>
                                                       </div>
                                                       <div class="modal-footer justify-content-center">
-                                                        <input type="hidden" name="id-fakultas" value="<?= $row_fakultas['id_jurusan'] ?>">
-                                                        <input type="hidden" name="namaOld" value="<?= $row_fakultas['nama_jurusan'] ?>">
+                                                        <input type="hidden" name="id-prodi" value="<?= $row_prodi['id_prodi'] ?>">
+                                                        <input type="hidden" name="namaOld" value="<?= $row_prodi['nama_prodi'] ?>">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" name="ubah-fakultas" class="btn btn-warning">Ubah</button>
+                                                        <button type="submit" name="ubah-prodi" class="btn btn-warning">Ubah</button>
                                                       </div>
                                                     </form>
                                                   </div>
@@ -276,28 +276,28 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                               </div>
                                             </td>
                                             <td>
-                                              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus<?= $row_fakultas['id_jurusan'] ?>">
+                                              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus<?= $row_prodi['id_prodi'] ?>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                                   <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                                                 </svg>
                                               </button>
-                                              <div class="modal fade" id="hapus<?= $row_fakultas['id_jurusan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                              <div class="modal fade" id="hapus<?= $row_prodi['id_prodi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                   <div class="modal-content">
                                                     <div class="modal-header">
-                                                      <h5 class="modal-title" id="exampleModalLabel">Hapus data <?= $row_fakultas['nama_jurusan'] ?></h5>
+                                                      <h5 class="modal-title" id="exampleModalLabel">Hapus data <?= $row_prodi['nama_prodi'] ?></h5>
                                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body text-center">
-                                                      Anda yakin ingin menghapus data dari <?= $row_fakultas['nama_jurusan'] ?>?
+                                                      Anda yakin ingin menghapus data dari <?= $row_prodi['nama_prodi'] ?>?
                                                     </div>
                                                     <form action="" method="post">
                                                       <div class="modal-footer justify-content-center">
-                                                        <input type="hidden" name="id-fakultas" value="<?= $row_fakultas['id_jurusan'] ?>">
-                                                        <input type="hidden" name="namaOld" value="<?= $row_fakultas['nama_jurusan'] ?>">
+                                                        <input type="hidden" name="id-prodi" value="<?= $row_prodi['id_prodi'] ?>">
+                                                        <input type="hidden" name="namaOld" value="<?= $row_prodi['nama_prodi'] ?>">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" name="hapus-fakultas" class="btn btn-danger">Hapus</button>
+                                                        <button type="submit" name="hapus-prodi" class="btn btn-danger">Hapus</button>
                                                       </div>
                                                     </form>
                                                   </div>

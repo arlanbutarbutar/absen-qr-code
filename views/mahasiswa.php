@@ -83,11 +83,11 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                       <input type="number" name="no-hp" class="form-control" id="no-hp" placeholder="No. Handphone" required>
                     </div>
                     <div class="mb-3">
-                      <label for="prodi" class="form-label">Program Studi</label>
-                      <select name="prodi" class="form-select" aria-label="Default select example" required>
-                        <option selected value="">Pilih Program Studi</option>
-                        <?php foreach ($prodi as $row_pro) : ?>
-                          <option value="<?= $row_pro['id_prodi'] ?>"><?= $row_pro['nama_prodi'] ?></option>
+                      <label for="kelas" class="form-label">Program Kelas</label>
+                      <select name="kelas" class="form-select" aria-label="Default select example" required>
+                        <option selected value="">Pilih Program Kelas</option>
+                        <?php foreach ($kelas as $row_kelas) : ?>
+                          <option value="<?= $row_kelas['id_kelas'] ?>"><?= $row_kelas['nama_kelas'] . " " . $row_kelas['nama_prodi'] ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
@@ -114,8 +114,8 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                           <th scope="col">Agama</th>
                           <th scope="col">Alamat</th>
                           <th scope="col">No. Handphone</th>
+                          <th scope="col">Kelas</th>
                           <th scope="col">Program Studi</th>
-                          <th scope="col">Jurusan</th>
                           <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                             <th scope="col" colspan="2">Aksi</th>
                           <?php } ?>
@@ -139,8 +139,8 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                               <td><?= $row['agama'] ?></td>
                               <td><?= $row['alamat'] ?></td>
                               <td><?= $row['no_hp'] ?></td>
+                              <td><?= $row['nama_kelas'] ?></td>
                               <td><?= $row['nama_prodi'] ?></td>
-                              <td><?= $row['nama_jurusan'] ?></td>
                               <?php if ($_SESSION['data-user']['role'] == 1) { ?>
                                 <td>
                                   <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubah<?= $row['nim_mhs'] ?>">
@@ -195,11 +195,11 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                               <input type="number" name="no-hp" value="<?= $row['no_hp'] ?>" class="form-control" id="no-hp" placeholder="No. Handphone" required>
                                             </div>
                                             <div class="mb-3">
-                                              <label for="prodi" class="form-label">Program Studi</label>
-                                              <select name="prodi" class="form-select" aria-label="Default select example" required>
-                                                <option selected value="">Pilih Program Studi</option>
-                                                <?php foreach ($prodi as $row_pro) : ?>
-                                                  <option value="<?= $row_pro['id_prodi'] ?>"><?= $row_pro['nama_prodi'] ?></option>
+                                              <label for="kelas" class="form-label">Program Studi</label>
+                                              <select name="kelas" class="form-select" aria-label="Default select example" required>
+                                                <option selected value="">Pilih Kelas</option>
+                                                <?php foreach ($kelas as $row_kelas) : ?>
+                                                  <option value="<?= $row_kelas['id_kelas'] ?>"><?= $row_kelas['nama_kelas'] . " " . $row_kelas['nama_prodi'] ?></option>
                                                 <?php endforeach; ?>
                                               </select>
                                             </div>

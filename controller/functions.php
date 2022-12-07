@@ -205,8 +205,7 @@ if (isset($_SESSION['data-user'])) {
           $_SESSION['time-message'] = time();
           return false;
         }
-        $fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['fakultas']))));
-        mysqli_query($conn, "INSERT INTO prodi(id_jurusan,nama_prodi) VALUES('$fakultas','$nama')");
+        mysqli_query($conn, "INSERT INTO prodi(nama_prodi) VALUES('$nama')");
         return mysqli_affected_rows($conn);
       }
       function ubah_prodi($data)
@@ -223,8 +222,7 @@ if (isset($_SESSION['data-user'])) {
             return false;
           }
         }
-        $fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['fakultas']))));
-        mysqli_query($conn, "UPDATE prodi SET id_jurusan='$fakultas', nama_prodi='$nama' WHERE id_prodi='$id_prodi'");
+        mysqli_query($conn, "UPDATE prodi SET nama_prodi='$nama' WHERE id_prodi='$id_prodi'");
         return mysqli_affected_rows($conn);
       }
       function hapus_prodi($data)
@@ -234,41 +232,43 @@ if (isset($_SESSION['data-user'])) {
         mysqli_query($conn, "DELETE FROM prodi WHERE id_prodi='$id_prodi'");
         return mysqli_affected_rows($conn);
       }
-      function tambah_fakultas($data)
+      function tambah_kelas($data)
       {
         global $conn;
         $nama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nama']))));
-        $checkNama = mysqli_query($conn, "SELECT * FROM jurusan WHERE nama_jurusan='$nama'");
+        $id_prodi=htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-prodi']))));
+        $checkNama = mysqli_query($conn, "SELECT * FROM kelas WHERE nama_kelas='$nama' AND id_prodi='$id_prodi'");
         if (mysqli_num_rows($checkNama) > 0) {
           $_SESSION['message-danger'] = "Maaf, Nama yang anda masukan sudah ada.";
           $_SESSION['time-message'] = time();
           return false;
         }
-        mysqli_query($conn, "INSERT INTO jurusan(nama_jurusan) VALUES('$nama')");
+        mysqli_query($conn, "INSERT INTO kelas(id_prodi,nama_kelas) VALUES('$id_prodi','$nama')");
         return mysqli_affected_rows($conn);
       }
-      function ubah_fakultas($data)
+      function ubah_kelas($data)
       {
         global $conn;
-        $id_fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-fakultas']))));
+        $id_kelas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-kelas']))));
+        $id_prodi=htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-prodi']))));
         $namaOld = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['namaOld']))));
         $nama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['nama']))));
         if ($nama != $namaOld) {
-          $checkNama = mysqli_query($conn, "SELECT * FROM jurusan WHERE nama_jurusan='$nama'");
+          $checkNama = mysqli_query($conn, "SELECT * FROM kelas WHERE nama_kelas='$nama' AND id_prodi='$id_prodi'");
           if (mysqli_num_rows($checkNama) > 0) {
             $_SESSION['message-danger'] = "Maaf, Nama yang anda masukan sudah ada.";
             $_SESSION['time-message'] = time();
             return false;
           }
         }
-        mysqli_query($conn, "UPDATE jurusan SET nama_jurusan='$nama' WHERE id_jurusan='$id_fakultas'");
+        mysqli_query($conn, "UPDATE kelas SET id_prodi='$id_prodi', nama_kelas='$nama' WHERE id_kelas='$id_kelas'");
         return mysqli_affected_rows($conn);
       }
-      function hapus_fakultas($data)
+      function hapus_kelas($data)
       {
         global $conn;
-        $id_fakultas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-fakultas']))));
-        mysqli_query($conn, "DELETE FROM jurusan WHERE id_jurusan='$id_fakultas'");
+        $id_kelas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['id-kelas']))));
+        mysqli_query($conn, "DELETE FROM kelas WHERE id_kelas='$id_kelas'");
         return mysqli_affected_rows($conn);
       }
       function tambah_mahasiswa($data)
@@ -287,8 +287,8 @@ if (isset($_SESSION['data-user'])) {
         $agama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['agama']))));
         $alamat = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['alamat']))));
         $no_hp = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['no-hp']))));
-        $prodi = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['prodi']))));
-        mysqli_query($conn, "INSERT INTO mahasiswa(nim_mhs,id_prodi,nama_mhs,tempat_lahir,tanggal_lahir,agama,alamat,no_hp) VALUES('$nim','$prodi','$nama','$tempat_lahir','$tgl','$agama','$alamat','$no_hp')");
+        $kelas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['kelas']))));
+        mysqli_query($conn, "INSERT INTO mahasiswa(nim_mhs,id_kelas,nama_mhs,tempat_lahir,tanggal_lahir,agama,alamat,no_hp) VALUES('$nim','$kelas','$nama','$tempat_lahir','$tgl','$agama','$alamat','$no_hp')");
         return mysqli_affected_rows($conn);
       }
       function ubah_mahasiswa($data)
@@ -310,8 +310,8 @@ if (isset($_SESSION['data-user'])) {
         $agama = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['agama']))));
         $alamat = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['alamat']))));
         $no_hp = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['no-hp']))));
-        $prodi = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['prodi']))));
-        mysqli_query($conn, "UPDATE mahasiswa SET nim_mhs='$nim', id_prodi='$prodi', nama_mhs='$nama', tempat_lahir='$tempat_lahir', tanggal_lahir='$tgl', agama='$agama', alamat='$alamat', no_hp='$no_hp' WHERE nim_mhs='$nimOld'");
+        $kelas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['kelas']))));
+        mysqli_query($conn, "UPDATE mahasiswa SET nim_mhs='$nim', id_kelas='$kelas', nama_mhs='$nama', tempat_lahir='$tempat_lahir', tanggal_lahir='$tgl', agama='$agama', alamat='$alamat', no_hp='$no_hp' WHERE nim_mhs='$nimOld'");
         return mysqli_affected_rows($conn);
       }
       function hapus_mahasiswa($data)

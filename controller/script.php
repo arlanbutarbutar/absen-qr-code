@@ -81,18 +81,18 @@ if (isset($_SESSION['data-user'])) {
     $page_role2 = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
     $awal_data_role2 = ($page_role2 > 1) ? ($page_role2 * $data_role2) - $data_role2 : 0;
     $mahasiswa = mysqli_query($conn, "SELECT * FROM mahasiswa 
-      JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi 
-      JOIN jurusan ON prodi.id_jurusan=jurusan.id_jurusan 
+      JOIN kelas ON mahasiswa.id_kelas=kelas.id_kelas 
+      JOIN prodi ON kelas.id_prodi=prodi.id_prodi 
       ORDER BY mahasiswa.nim_mhs ASC LIMIT $awal_data_role2, $data_role2
     ");
 
     // select data
     $selectProdi = mysqli_query($conn, "SELECT * FROM prodi");
-    $selectFakultas = mysqli_query($conn, "SELECT * FROM jurusan");
+    $selectKelas = mysqli_query($conn, "SELECT * FROM kelas");
 
     // prodi/fakultas
-    $prodi = mysqli_query($conn, "SELECT * FROM prodi JOIN jurusan ON prodi.id_jurusan=jurusan.id_jurusan ORDER BY prodi.id_prodi DESC");
-    $fakultas = mysqli_query($conn, "SELECT * FROM jurusan ORDER BY id_jurusan DESC");
+    $kelas = mysqli_query($conn, "SELECT * FROM kelas JOIN prodi ON kelas.id_prodi=prodi.id_prodi ORDER BY kelas.id_kelas DESC");
+    $prodi = mysqli_query($conn, "SELECT * FROM prodi ORDER BY id_prodi DESC");
 
     // jadwal
     if (isset($_POST['buat-jadwal'])) {
@@ -157,6 +157,32 @@ if (isset($_SESSION['data-user'])) {
         }
       }
 
+      // kelas
+      if (isset($_POST['tambah-kelas'])) {
+        if (tambah_kelas($_POST) > 0) {
+          $_SESSION['message-success'] = "Kelas baru berhasil di tambahkan.";
+          $_SESSION['time-message'] = time();
+          header("Location: " . $_SESSION['page-url']);
+          exit();
+        }
+      }
+      if (isset($_POST['ubah-kelas'])) {
+        if (ubah_kelas($_POST) > 0) {
+          $_SESSION['message-success'] = "Kelas " . $_POST['namaOld'] . " berhasil di ubah.";
+          $_SESSION['time-message'] = time();
+          header("Location: " . $_SESSION['page-url']);
+          exit();
+        }
+      }
+      if (isset($_POST['hapus-kelas'])) {
+        if (hapus_kelas($_POST) > 0) {
+          $_SESSION['message-success'] = "Kelas " . $_POST['namaOld'] . " berhasil di hapus.";
+          $_SESSION['time-message'] = time();
+          header("Location: " . $_SESSION['page-url']);
+          exit();
+        }
+      }
+
       // prodi
       if (isset($_POST['tambah-prodi'])) {
         if (tambah_prodi($_POST) > 0) {
@@ -177,32 +203,6 @@ if (isset($_SESSION['data-user'])) {
       if (isset($_POST['hapus-prodi'])) {
         if (hapus_prodi($_POST) > 0) {
           $_SESSION['message-success'] = "Program Studi " . $_POST['namaOld'] . " berhasil di hapus.";
-          $_SESSION['time-message'] = time();
-          header("Location: " . $_SESSION['page-url']);
-          exit();
-        }
-      }
-
-      // fakultas
-      if (isset($_POST['tambah-fakultas'])) {
-        if (tambah_fakultas($_POST) > 0) {
-          $_SESSION['message-success'] = "Jurusan baru berhasil di tambahkan.";
-          $_SESSION['time-message'] = time();
-          header("Location: " . $_SESSION['page-url']);
-          exit();
-        }
-      }
-      if (isset($_POST['ubah-fakultas'])) {
-        if (ubah_fakultas($_POST) > 0) {
-          $_SESSION['message-success'] = "Jurusan " . $_POST['namaOld'] . " berhasil di ubah.";
-          $_SESSION['time-message'] = time();
-          header("Location: " . $_SESSION['page-url']);
-          exit();
-        }
-      }
-      if (isset($_POST['hapus-fakultas'])) {
-        if (hapus_fakultas($_POST) > 0) {
-          $_SESSION['message-success'] = "Jurusan " . $_POST['namaOld'] . " berhasil di hapus.";
           $_SESSION['time-message'] = time();
           header("Location: " . $_SESSION['page-url']);
           exit();
@@ -308,7 +308,7 @@ if (isset($_SESSION['data-user'])) {
     ");
 
     if ($_SESSION['data-user']['role'] == 3) {
-      $profil = mysqli_query($conn, "SELECT * FROM mahasiswa JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi JOIN jurusan ON prodi.id_jurusan=jurusan.id_jurusan WHERE mahasiswa.nim_mhs='$idUser'");
+      $profil = mysqli_query($conn, "SELECT * FROM mahasiswa JOIN prodi ON mahasiswa.id_prodi=prodi.id_prodi JOIN kelas ON prodi.id_kelas=kelas.id_kelas WHERE mahasiswa.nim_mhs='$idUser'");
       if (isset($_POST['ubah-profil-mhs'])) {
         if (ubah_profil_mhs($_POST) > 0) {
           $_SESSION['message-success'] = "Profil berhasil di ubah.";
