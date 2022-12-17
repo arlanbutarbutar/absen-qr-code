@@ -30,7 +30,7 @@ if (isset($_SESSION['time-message'])) {
   }
 }
 
-$baseURL = "http://$_SERVER[HTTP_HOST]/absen-qr-code/";
+$baseURL = "http://$_SERVER[HTTP_HOST]/apps/absen-qr-code/";
 
 if (!isset($_SESSION['data-user'])) {
   if (isset($_POST['masuk'])) {
@@ -291,6 +291,8 @@ if (isset($_SESSION['data-user'])) {
 
       // 
     }
+
+    $verifikasi_mk=mysqli_query($conn, "SELECT * FROM jadwal JOIN mata_kuliah ON jadwal.id_mk=mata_kuliah.id_mk JOIN dosen ON mata_kuliah.nip_dosen=dosen.nip_dosen JOIN absen ON jadwal.id_jadwal=absen.id_jadwal");
   }
 
   if ($_SESSION['data-user']['role'] <= 3) {

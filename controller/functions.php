@@ -288,7 +288,8 @@ if (isset($_SESSION['data-user'])) {
         $alamat = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['alamat']))));
         $no_hp = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['no-hp']))));
         $kelas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['kelas']))));
-        mysqli_query($conn, "INSERT INTO mahasiswa(nim_mhs,id_kelas,nama_mhs,tempat_lahir,tanggal_lahir,agama,alamat,no_hp) VALUES('$nim','$kelas','$nama','$tempat_lahir','$tgl','$agama','$alamat','$no_hp')");
+        $semester = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['semester']))));
+        mysqli_query($conn, "INSERT INTO mahasiswa(nim_mhs,id_kelas,nama_mhs,tempat_lahir,tanggal_lahir,agama,alamat,no_hp,semester) VALUES('$nim','$kelas','$nama','$tempat_lahir','$tgl','$agama','$alamat','$no_hp','$semester')");
         return mysqli_affected_rows($conn);
       }
       function ubah_mahasiswa($data)
@@ -311,7 +312,8 @@ if (isset($_SESSION['data-user'])) {
         $alamat = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['alamat']))));
         $no_hp = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['no-hp']))));
         $kelas = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['kelas']))));
-        mysqli_query($conn, "UPDATE mahasiswa SET nim_mhs='$nim', id_kelas='$kelas', nama_mhs='$nama', tempat_lahir='$tempat_lahir', tanggal_lahir='$tgl', agama='$agama', alamat='$alamat', no_hp='$no_hp' WHERE nim_mhs='$nimOld'");
+        $semester = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['semester']))));
+        mysqli_query($conn, "UPDATE mahasiswa SET nim_mhs='$nim', id_kelas='$kelas', nama_mhs='$nama', tempat_lahir='$tempat_lahir', tanggal_lahir='$tgl', agama='$agama', alamat='$alamat', no_hp='$no_hp', semester='$semester' WHERE nim_mhs='$nimOld'");
         return mysqli_affected_rows($conn);
       }
       function hapus_mahasiswa($data)

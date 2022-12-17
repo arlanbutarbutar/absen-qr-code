@@ -54,6 +54,10 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                       <label for="nama" class="form-label">Nama</label>
                       <input type="text" name="nama" class="form-control" id="nama" placeholder="Nama" required>
                     </div>
+                    <div class="mb-3 mt-4">
+                      <label for="semester" class="form-label">Semester</label>
+                      <input type="number" name="semester" class="form-control" id="semester" placeholder="Semester" required>
+                    </div>
                     <div class="mb-3">
                       <label for="tempat-lahir" class="form-label">Tempat Lahir</label>
                       <input type="text" name="tempat-lahir" class="form-control" id="tempat-lahir" placeholder="Tempat Lahir" required>
@@ -110,6 +114,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                           <th scope="col">#</th>
                           <th scope="col">NIM</th>
                           <th scope="col">Nama</th>
+                          <th scope="col">Semester</th>
                           <th scope="col">TTL</th>
                           <th scope="col">Agama</th>
                           <th scope="col">Alamat</th>
@@ -124,7 +129,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                       <tbody id="search-data">
                         <?php if (mysqli_num_rows($mahasiswa) == 0) { ?>
                           <tr class="text-center">
-                            <th scope="row" colspan="11">Belum ada data mahasiswa</th>
+                            <th scope="row" colspan="12">Belum ada data mahasiswa</th>
                           </tr>
                           <?php } else if (mysqli_num_rows($mahasiswa) > 0) {
                           $no = 1;
@@ -133,6 +138,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                               <th scope="row"><?= $no; ?></th>
                               <td><?= $row['nim_mhs'] ?></td>
                               <td><?= $row['nama_mhs'] ?></td>
+                              <td><?= $row['semester'] ?></td>
                               <?php $date = date_create($row['tanggal_lahir']);
                               $date = date_format($date, 'd M Y'); ?>
                               <td><?= $row['tempat_lahir'] . ", " . $date ?></td>
@@ -165,6 +171,10 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                             <div class="mb-3 mt-4">
                                               <label for="nama" class="form-label">Nama</label>
                                               <input type="text" name="nama" value="<?= $row['nama_mhs'] ?>" class="form-control" id="nama" placeholder="Nama" required>
+                                            </div>
+                                            <div class="mb-3 mt-4">
+                                              <label for="semester" class="form-label">Semester</label>
+                                              <input type="number" name="semester" value="<?= $row['semester'] ?>" class="form-control" id="semester" placeholder="Semester" required>
                                             </div>
                                             <div class="mb-3">
                                               <label for="tempat-lahir" class="form-label">Tempat Lahir</label>
