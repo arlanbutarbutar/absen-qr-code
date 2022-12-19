@@ -121,10 +121,50 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 <div class="card-title">
                   <div class="row">
                     <div class="col-2">
-                      <button type="button" onclick="window.location.href='cetak-verifikasi'" class="btn btn-primary shadow rounded-0 text-white">Export</button>
+                      <button type="button" class="btn btn-primary shadow rounded-0 text-white" data-bs-toggle="modal" data-bs-target="#Export">
+                        Export
+                      </button>
+                      <div class="modal fade" id="Export" tabindex="-1" aria-labelledby="ExportLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content rounded-0 border-0 shadow">
+                            <div class="modal-header border-bottom-0 shadow">
+                              <h5 class="modal-title" id="ExportLabel">Export</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="cetak-verifikasi.php" method="post">
+                              <div class="modal-body">
+                                <div class="mb-3">
+                                  <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                                  <select name="id-prodi" class="form-select" aria-label="Default select example" required>
+                                    <option selected value="">Pilih Program Studi</option>
+                                    <?php foreach ($selectProdi as $data_prodi) : ?>
+                                      <option value="<?= $data_prodi['id_prodi'] ?>"><?= $data_prodi['nama_prodi'] ?></option>
+                                    <?php endforeach; ?>
+                                  </select>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="exampleFormControlInput1" class="form-label">Ketua Program Studi</label>
+                                  <select name="kepro" class="form-select" aria-label="Default select example" required>
+                                    <option selected value="">Pilih Ketua Program Studi</option>
+                                    <?php foreach ($selectKaProdi as $data_kaprodi) : ?>
+                                      <option value="<?= $data_kaprodi['nip_dosen'] ?>"><?= $data_kaprodi['nama_dosen'] ?></option>
+                                    <?php endforeach; ?>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="modal-footer border-top-0 justify-content-center">
+                                <button type="button" class="btn btn-secondary shadow rounded-0 text-white" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="export-value" class="btn btn-primary shadow rounded-0 text-white">Export</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <button type="button" onclick="window.location.href='cetak-verifikasi'" class="btn btn-primary shadow rounded-0 text-white">Export</button> -->
                     </div>
                     <div class="col-10">
                       <h4 class="mt-3">REALISASI PENGAJARAN DAN VERIFIKASI MATERI KULIAH</h4>
+                      <p>Status Pertemuan: a.Sesuai Jadwal, b. Pertukaran, c. Tambahan (dilingkar)*</p>
                     </div>
                   </div>
                 </div>
@@ -380,12 +420,8 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         </tr>
                         <tr>
                           <td colspan="9"></td>
-                          <td colspan="3" style="text-align: left;">Diverifikasi dan Disetujui Ka. Prodi D3 Teknik Listrik<br><br>
-                            <?php $kaprodi = mysqli_query($conn, "SELECT * FROM dosen WHERE jabatan='Kepro'");
-                            if (mysqli_num_rows($kaprodi) > 0) {
-                              $row_kaprodi = mysqli_fetch_assoc($kaprodi);
-                              echo $row_kaprodi['nama_dosen'];
-                            } ?></td>
+                          <td colspan="3" style="text-align: left;">Diverifikasi dan Disetujui Ka. Prodi _____________<br><br>
+                            _________</td>
                         </tr>
                       <?php $no++;
                       } ?>

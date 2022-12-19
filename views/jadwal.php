@@ -84,7 +84,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                               <select name="ruang" class="form-select" aria-label="Default select example" required>
                                 <option selected value="">Pilih Kelas</option>
                                 <?php foreach ($kelas as $row_kelas) : ?>
-                                  <option value="<?= $row_kelas['nama_kelas'] ?>"><?= $row_kelas['nama_kelas'] . " " . $row_kelas['nama_prodi'] ?></option>
+                                  <option value="<?= $row_kelas['id_kelas'] ?>"><?= $row_kelas['nama_kelas'] . " " . $row_kelas['nama_prodi'] ?></option>
                                 <?php endforeach; ?>
                               </select>
                             </div>

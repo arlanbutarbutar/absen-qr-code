@@ -402,7 +402,7 @@ if (isset($_SESSION['data-user'])) {
         $selesai = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $data['selesai']))));
         $data_encrypt = mt_rand(1000, 9999);
         $qrcode = qrcode($data_encrypt);
-        mysqli_query($conn, "INSERT INTO jadwal(id_mk,hari,ruang,mulai,selesai,qr_code) VALUES('$id_mk','$hari','$ruang','$mulai','$selesai','$qrcode')");
+        mysqli_query($conn, "INSERT INTO jadwal(id_mk,hari,id_kelas,mulai,selesai,qr_code) VALUES('$id_mk','$hari','$ruang','$mulai','$selesai','$qrcode')");
         return mysqli_affected_rows($conn);
       }
       function ubah_jadwal($data)

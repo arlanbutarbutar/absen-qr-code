@@ -30,7 +30,7 @@ if (isset($_SESSION['time-message'])) {
   }
 }
 
-$baseURL = "http://$_SERVER[HTTP_HOST]/apps/absen-qr-code/";
+$baseURL = "http://$_SERVER[HTTP_HOST]/absen-qr-code/";
 
 if (!isset($_SESSION['data-user'])) {
   if (isset($_POST['masuk'])) {
@@ -88,6 +88,7 @@ if (isset($_SESSION['data-user'])) {
 
     // select data
     $selectProdi = mysqli_query($conn, "SELECT * FROM prodi");
+    $selectKaProdi = mysqli_query($conn, "SELECT * FROM dosen WHERE jabatan='Kepro'");
     $selectKelas = mysqli_query($conn, "SELECT * FROM kelas");
 
     // prodi/fakultas

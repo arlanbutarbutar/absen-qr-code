@@ -7,12 +7,18 @@ if ($_SESSION['data-user']['role'] == 3) {
 $_SESSION['page-name'] = "Cetak Verifikasi";
 $_SESSION['page-url'] = "cetak-verifikasi";
 
+$id_prodi = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_POST['id-prodi']))));
+$kepro = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $_POST['kepro']))));
+$verifikasi_mkExport = mysqli_query($conn, "SELECT * FROM prodi WHERE prodi.id_prodi='$id_prodi'");
+$dataAll = mysqli_fetch_assoc($verifikasi_mkExport);
+
 header("Content-type: application/vnd-ms-excel");
 header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verifikasi Materi Kuliah.xls");
 ?>
 
 <center>
   <h3>REALISASI PENGAJARAN DAN VERIFIKASI MATERI KULIAH</h3>
+  <p>Status Pertemuan: a.Sesuai Jadwal, b. Pertukaran, c. Tambahan (dilingkar)*</p>
 </center>
 <table border="1" class="table table-striped table-sm table-hover text-center table-bordered">
   <thead>
@@ -38,15 +44,15 @@ header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verif
   </thead>
   <tbody>
     <?php $no = 1;
-    if (mysqli_num_rows($verifikasi_mk) == 0) { ?>
+    if (mysqli_num_rows($verifikasi_mkExport) == 0) { ?>
       <tr>
         <th scope="row" colspan="12">belum ada data</th>
       </tr>
-    <?php } else if (mysqli_num_rows($verifikasi_mk) > 0) {
+    <?php } else if (mysqli_num_rows($verifikasi_mkExport) > 0) {
     ?>
       <tr>
         <th scope="row">Senin</th>
-        <?php $senin = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Senin'");
+        <?php $senin = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal JOIN kelas ON jadwal.id_kelas=kelas.id_kelas JOIN prodi ON kelas.id_prodi=prodi.id_prodi WHERE prodi.id_prodi='$id_prodi' AND jadwal.hari='Senin'");
         if (mysqli_num_rows($senin) > 0) {
           while ($row_senin = mysqli_fetch_assoc($senin)) { ?>
             <td>
@@ -89,7 +95,7 @@ header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verif
       </tr>
       <tr>
         <th scope="row">Selasa</th>
-        <?php $selasa = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Selasa'");
+        <?php $selasa = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal JOIN kelas ON jadwal.id_kelas=kelas.id_kelas JOIN prodi ON kelas.id_prodi=prodi.id_prodi WHERE prodi.id_prodi='$id_prodi' AND jadwal.hari='Selasa'");
         if (mysqli_num_rows($selasa) > 0) {
           while ($row_selasa = mysqli_fetch_assoc($selasa)) { ?>
             <td>
@@ -132,7 +138,7 @@ header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verif
       </tr>
       <tr>
         <th scope="row">Rabu</th>
-        <?php $Rabu = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Rabu'");
+        <?php $Rabu = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal JOIN kelas ON jadwal.id_kelas=kelas.id_kelas JOIN prodi ON kelas.id_prodi=prodi.id_prodi WHERE prodi.id_prodi='$id_prodi' AND jadwal.hari='Rabu'");
         if (mysqli_num_rows($Rabu) > 0) {
           while ($row_Rabu = mysqli_fetch_assoc($Rabu)) { ?>
             <td>
@@ -175,7 +181,7 @@ header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verif
       </tr>
       <tr>
         <th scope="row">Kamis</th>
-        <?php $kamis = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Kamis'");
+        <?php $kamis = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal JOIN kelas ON jadwal.id_kelas=kelas.id_kelas JOIN prodi ON kelas.id_prodi=prodi.id_prodi WHERE prodi.id_prodi='$id_prodi' AND jadwal.hari='Kamis'");
         if (mysqli_num_rows($kamis) > 0) {
           while ($row_Kamis = mysqli_fetch_assoc($kamis)) { ?>
             <td>
@@ -218,7 +224,7 @@ header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verif
       </tr>
       <tr>
         <th scope="row">Jumat</th>
-        <?php $Jumat = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Jumat'");
+        <?php $Jumat = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal JOIN kelas ON jadwal.id_kelas=kelas.id_kelas JOIN prodi ON kelas.id_prodi=prodi.id_prodi WHERE prodi.id_prodi='$id_prodi' AND jadwal.hari='Jumat'");
         if (mysqli_num_rows($Jumat) > 0) {
           while ($row_Jumat = mysqli_fetch_assoc($Jumat)) { ?>
             <td>
@@ -265,8 +271,8 @@ header("Content-Disposition: attachment; filename=Realisasi Pengajaran Dan Verif
       </tr>
       <tr>
         <td colspan="9"></td>
-        <td colspan="3" style="text-align: left;">Diverifikasi dan Disetujui Ka. Prodi D3 Teknik Listrik<br><br>
-          <?php $kaprodi = mysqli_query($conn, "SELECT * FROM dosen WHERE jabatan='Kepro'");
+        <td colspan="3" style="text-align: left;">Diverifikasi dan Disetujui Ka. Prodi D3 <?= $dataAll['nama_prodi'] ?><br><br>
+          <?php $kaprodi = mysqli_query($conn, "SELECT * FROM dosen WHERE nip_dosen='$kepro'");
           if (mysqli_num_rows($kaprodi) > 0) {
             $row_kaprodi = mysqli_fetch_assoc($kaprodi);
             echo $row_kaprodi['nama_dosen'];
