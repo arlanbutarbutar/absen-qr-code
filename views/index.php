@@ -203,7 +203,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                           <th scope="row">Senin</th>
                           <?php $senin = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Senin'");
                           if (mysqli_num_rows($senin) > 0) {
-                            while ($row_senin = mysqli_fetch_assoc($senin)) { ?>
+                            $row_senin = mysqli_fetch_assoc($senin); ?>
                               <td>
                                 <?php $date = date_create($row_senin['tgl_masuk']);
                                 echo date_format($date, 'd M Y'); ?></td>
@@ -239,14 +239,14 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 <td></td>
                               <?php
                               } ?>
-                          <?php }
+                          <?php 
                           } ?>
                         </tr>
                         <tr>
                           <th scope="row">Selasa</th>
                           <?php $selasa = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Selasa'");
                           if (mysqli_num_rows($selasa) > 0) {
-                            while ($row_selasa = mysqli_fetch_assoc($selasa)) { ?>
+                            $row_selasa = mysqli_fetch_assoc($selasa); ?>
                               <td>
                                 <?php $date = date_create($row_selasa['tgl_masuk']);
                                 echo date_format($date, 'd M Y'); ?></td>
@@ -282,14 +282,14 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 <td></td>
                               <?php
                               } ?>
-                          <?php }
+                          <?php 
                           } ?>
                         </tr>
                         <tr>
                           <th scope="row">Rabu</th>
                           <?php $Rabu = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Rabu'");
                           if (mysqli_num_rows($Rabu) > 0) {
-                            while ($row_Rabu = mysqli_fetch_assoc($Rabu)) { ?>
+                            $row_Rabu = mysqli_fetch_assoc($Rabu); ?>
                               <td>
                                 <?php $date = date_create($row_Rabu['tgl_masuk']);
                                 echo date_format($date, 'd M Y'); ?></td>
@@ -325,14 +325,14 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 <td></td>
                               <?php
                               } ?>
-                          <?php }
+                          <?php 
                           } ?>
                         </tr>
                         <tr>
                           <th scope="row">Kamis</th>
                           <?php $kamis = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Kamis'");
                           if (mysqli_num_rows($kamis) > 0) {
-                            while ($row_Kamis = mysqli_fetch_assoc($kamis)) { ?>
+                            $row_Kamis = mysqli_fetch_assoc($kamis); ?>
                               <td>
                                 <?php $date = date_create($row_Kamis['tgl_masuk']);
                                 echo date_format($date, 'd M Y'); ?></td>
@@ -368,14 +368,14 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 <td></td>
                               <?php
                               } ?>
-                          <?php }
+                          <?php 
                           } ?>
                         </tr>
                         <tr>
                           <th scope="row">Jumat</th>
                           <?php $Jumat = mysqli_query($conn, "SELECT * FROM jadwal JOIN absen ON jadwal.id_jadwal=absen.id_jadwal WHERE jadwal.hari='Jumat'");
                           if (mysqli_num_rows($Jumat) > 0) {
-                            while ($row_Jumat = mysqli_fetch_assoc($Jumat)) { ?>
+                            $row_Jumat = mysqli_fetch_assoc($Jumat); ?>
                               <td>
                                 <?php $date = date_create($row_Jumat['tgl_masuk']);
                                 echo date_format($date, 'd M Y'); ?></td>
@@ -411,7 +411,7 @@ $_SESSION['actual-link'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 <td></td>
                               <?php
                               } ?>
-                          <?php }
+                          <?php 
                           } ?>
                         </tr>
                         <tr>
